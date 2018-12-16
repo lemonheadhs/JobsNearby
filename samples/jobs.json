@@ -1,0 +1,1822 @@
+{
+    "code": 200,
+    "data": {
+        "numFound": 190,
+        "results": [
+            {
+                "number": "CC671779928J90250465000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "79",
+                            "name": "软件研发工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件研发工程师"
+                },
+                "company": {
+                    "number": "CZ671779920",
+                    "url": "https://company.zhaopin.com/CZ671779920.htm",
+                    "name": "长沙求知信息技术有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/671779928250465.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "8K-10K",
+                "emplType": "全职",
+                "jobName": ".net（C#）开发工程师",
+                "industry": "210500,160400,201100,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.189219",
+                    "lon": "113.031943"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-14 17:32:19",
+                "createDate": "2018-12-14 17:32:16",
+                "endDate": "2019-01-13 17:32:16",
+                "welfare": [
+                    "每年多次调薪",
+                    "年底双薪",
+                    "绩效奖金",
+                    "带薪年假",
+                    "弹性工作"
+                ],
+                "saleType": 0,
+                "feedbackRation": 1,
+                "score": 475.12,
+                "resumeCount": 68,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"每年多次调薪\",\"年底双薪\",\"绩效奖金\",\"带薪年假\",\"弹性工作\",\"员工旅游\",\"节日福利\",\"五险一金\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": "100%"
+            },
+            {
+                "number": "CC121052254J90250266000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ121052250",
+                    "url": "https://company.zhaopin.com/CZ121052250.htm",
+                    "name": "北京亿高索尔科技有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "8",
+                        "name": "股份制企业"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/121052254250266.htm",
+                "workingExp": {
+                    "code": "-1",
+                    "name": "不限"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "6K-8K",
+                "emplType": "全职",
+                "jobName": "ASP.NET/C#软件工程师",
+                "industry": "160400,210500,990000,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "39.971397",
+                    "lon": "116.369657"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-11 11:45:05",
+                "createDate": "2018-12-03 09:43:58",
+                "endDate": "2019-01-02 09:43:58",
+                "welfare": [
+                    "五险一金"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.1774,
+                "score": 459.096,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":20}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CZ332218410J00029509902",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "53",
+                            "name": "互联网软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,互联网软件工程师"
+                },
+                "company": {
+                    "number": "CZ332218410",
+                    "url": "https://company.zhaopin.com/CZ332218410.htm",
+                    "name": "湖南鼎太网络科技有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CZ332218410J00029509902.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "5.5K-9K",
+                "emplType": "全职",
+                "jobName": "ASP.NET/C#后端开发工程师",
+                "industry": "160200,210500,160400",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.188230",
+                    "lon": "112.986468"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-13 14:41:00",
+                "createDate": "2018-12-13 14:41:00",
+                "endDate": "2019-01-12 14:41:00",
+                "welfare": [
+                    "五险一金",
+                    "全勤奖",
+                    "绩效奖金",
+                    "餐补",
+                    "带薪年假"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.9592,
+                "score": 458.368,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"全勤奖\",\"绩效奖金\",\"餐补\",\"带薪年假\",\"节日福利\",\"弹性工作\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": "95%"
+            },
+            {
+                "number": "CC121052254J90250268000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "44",
+                            "name": "高级软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,高级软件工程师"
+                },
+                "company": {
+                    "number": "CZ121052250",
+                    "url": "https://company.zhaopin.com/CZ121052250.htm",
+                    "name": "北京亿高索尔科技有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "8",
+                        "name": "股份制企业"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/121052254250268.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "8K-10K",
+                "emplType": "全职",
+                "jobName": ".NET高级开发工程师（C#)",
+                "industry": "160400,210500,990000,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "39.971397",
+                    "lon": "116.369657"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-11 11:45:05",
+                "createDate": "2018-12-03 09:43:57",
+                "endDate": "2019-01-02 09:43:57",
+                "welfare": [
+                    "五险一金"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.1667,
+                "score": 438.668,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":20}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CZ693252680J00238601405",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ693252680",
+                    "url": "https://company.zhaopin.com/CZ693252680.htm",
+                    "name": "长沙京鸿信息技术有限公司",
+                    "size": {
+                        "code": "1",
+                        "name": "20人以下"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CZ693252680J00238601405.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "4",
+                    "name": "本科"
+                },
+                "salary": "4K-8K",
+                "emplType": "全职",
+                "jobName": "软件工程师（C#/Net）",
+                "industry": "160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.227865",
+                    "lon": "113.073269"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-14 19:08:51",
+                "createDate": "2018-12-10 12:24:30",
+                "endDate": "2019-01-09 12:24:30",
+                "welfare": [
+                    "创业公司",
+                    "五险一金",
+                    "周末双休",
+                    "股票期权",
+                    "包吃"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.3333,
+                "score": 433.332,
+                "resumeCount": 6,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"创业公司\",\"五险一金\",\"周末双休\",\"股票期权\",\"包吃\",\"包住\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":10}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": ""
+            },
+            {
+                "number": "CC145210663J90250549000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "44",
+                            "name": "高级软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,高级软件工程师"
+                },
+                "company": {
+                    "number": "CZ145210660",
+                    "url": "https://company.zhaopin.com/CZ145210660.htm",
+                    "name": "禾麦科技开发（深圳）有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "2",
+                        "name": "外商独资"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/145210663250549.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "10K-15K",
+                "emplType": "全职",
+                "jobName": ".NET/C#高级研发工程师",
+                "industry": "160400,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "22.542343",
+                    "lon": "114.119314"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-13 15:31:59",
+                "createDate": "2018-12-07 11:06:43",
+                "endDate": "2019-03-02 11:06:43",
+                "welfare": [
+                    "五险一金",
+                    "年底双薪",
+                    "绩效奖金",
+                    "通讯补助",
+                    "带薪年假"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0,
+                "score": 428.88,
+                "resumeCount": 4,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"年底双薪\",\"绩效奖金\",\"通讯补助\",\"带薪年假\",\"员工旅游\",\"节日福利\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": ""
+            },
+            {
+                "number": "CC252497632J00150880404",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "79",
+                            "name": "软件研发工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件研发工程师"
+                },
+                "company": {
+                    "number": "CZ252497630",
+                    "url": "https://company.zhaopin.com/CZ252497630.htm",
+                    "name": "广州健云信息技术有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC252497632J00150880404.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "8K-10K",
+                "emplType": "全职",
+                "jobName": ".NET开发工程师（C#  winform）",
+                "industry": "210500,160000,160400,121400",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.175382",
+                    "lon": "112.980092"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-12 15:53:12",
+                "createDate": "2018-12-12 15:53:12",
+                "endDate": "2019-01-11 15:53:12",
+                "welfare": [
+                    "五险一金",
+                    "补充医疗保险",
+                    "餐补",
+                    "通讯补助",
+                    "节日福利"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.2,
+                "score": 423.36,
+                "resumeCount": 5,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"补充医疗保险\",\"餐补\",\"通讯补助\",\"节日福利\",\"员工旅游\",\"定期体检\",\"周末双休\"],\"companyTag\":null,\"skill\":[\"C#/.NET\",\"Winform\"],\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CZ645926280J00097769005",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ645926280",
+                    "url": "https://company.zhaopin.com/CZ645926280.htm",
+                    "name": "ビズコネクト株式会社",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "2",
+                        "name": "外商独资"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CZ645926280J00097769005.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "4",
+                    "name": "本科"
+                },
+                "salary": "12K-24K",
+                "emplType": "全职",
+                "jobName": "软件开发.NET（VB.NET，C#，ASP.NET）",
+                "industry": "160400,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "45.803775",
+                    "lon": "126.534967"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-04-25 14:19:46",
+                "createDate": "2018-04-25 14:19:46",
+                "endDate": "2019-03-02 23:59:59",
+                "welfare": [
+                    "创业公司",
+                    "交通补助",
+                    "带薪年假",
+                    "年底双薪"
+                ],
+                "saleType": 0,
+                "feedbackRation": 1,
+                "score": 410,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"创业公司\",\"交通补助\",\"带薪年假\",\"年底双薪\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": "100%"
+            },
+            {
+                "number": "CC435804281J00154511405",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ435804280",
+                    "url": "https://company.zhaopin.com/CZ435804280.htm",
+                    "name": "长沙安广普慧电子商务有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC435804281J00154511405.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "4K-8K",
+                "emplType": "全职",
+                "jobName": "c# .net开发工程师（岗亭系统开发工程师）",
+                "industry": "210500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.205132",
+                    "lon": "112.972279"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-06 09:54:56",
+                "createDate": "2018-12-06 09:54:56",
+                "endDate": "2019-01-05 09:54:56",
+                "welfare": [
+                    "加班补助",
+                    "节日福利",
+                    "五险一金",
+                    "周末双休",
+                    "全勤奖"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0,
+                "score": 400,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"加班补助\",\"节日福利\",\"五险一金\",\"周末双休\",\"全勤奖\",\"绩效奖金\",\"不加班\",\"带薪年假\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":20}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CC255228715J00178143608",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ255228710",
+                    "url": "https://company.zhaopin.com/CZ255228710.htm",
+                    "name": "湖南广远视通网络技术有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "7",
+                        "name": "其它"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC255228715J00178143608.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "8K-15K",
+                "emplType": "全职",
+                "jobName": ".net",
+                "industry": "160400,160100,300100",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.209010",
+                    "lon": "112.885786"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        },
+                        {
+                            "code": "2226",
+                            "name": "岳麓区"
+                        }
+                    ],
+                    "display": "长沙-岳麓区"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-16 13:01:53",
+                "createDate": "2018-12-04 10:07:33",
+                "endDate": "2019-01-03 10:07:33",
+                "welfare": [
+                    "五险一金",
+                    "包吃",
+                    "交通补助",
+                    "通讯补助",
+                    "带薪年假"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.4615,
+                "score": 395.29736,
+                "resumeCount": 13,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1002,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"包吃\",\"交通补助\",\"通讯补助\",\"带薪年假\",\"定期体检\",\"节日福利\",\"加班补助\"],\"companyTag\":null,\"skill\":[\"C#/.NET\",\"数据库\"],\"refreshLevel\":2,\"chatWindow\":10}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": ""
+            },
+            {
+                "number": "CZ418858430J00176553404",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ418858430",
+                    "url": "https://company.zhaopin.com/CZ418858430.htm",
+                    "name": "湖南创爱网络科技有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CZ418858430J00176553404.htm",
+                "workingExp": {
+                    "code": "-1",
+                    "name": "不限"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "5K-10K",
+                "emplType": "全职",
+                "jobName": ".net开发/C#开发/后端开发（五险一金）",
+                "industry": "210500,170500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.149808",
+                    "lon": "112.986384"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-12 16:21:29",
+                "createDate": "2018-12-12 16:21:28",
+                "endDate": "2019-01-11 16:21:28",
+                "welfare": [
+                    "五险一金",
+                    "年底双薪",
+                    "餐补",
+                    "交通补助",
+                    "带薪年假"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0,
+                "score": 340,
+                "resumeCount": 1,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 0,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"年底双薪\",\"餐补\",\"交通补助\",\"带薪年假\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":10}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CC000876553J90000035000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "3010000",
+                            "name": "行政/后勤/文秘"
+                        },
+                        {
+                            "code": "329",
+                            "name": "其他"
+                        }
+                    ],
+                    "display": "行政/后勤/文秘,其他"
+                },
+                "company": {
+                    "number": "CC000876553",
+                    "url": "http://xiaoyuan.zhaopin.com/subcompany/CC000876553D90000011000",
+                    "name": "今日资本",
+                    "size": {
+                        "code": "4",
+                        "name": "500-999人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://xiaoyuan.zhaopin.com/job/CC000876553J90000035000",
+                "workingExp": {
+                    "code": "0",
+                    "name": "无经验"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "校招",
+                "emplType": "校园",
+                "jobName": "高级.net开发",
+                "industry": "180000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "0",
+                    "lon": "0"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "4",
+                "updateDate": "2018-12-16 05:00:07",
+                "createDate": "2018-11-22 17:22:49",
+                "endDate": "0001-01-01 00:00:00",
+                "welfare": [],
+                "saleType": 0,
+                "feedbackRation": 0,
+                "score": 332.60797,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":null,\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": ""
+            },
+            {
+                "number": "CC423724180J00226870603",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ423724180",
+                    "url": "https://company.zhaopin.com/CZ423724180.htm",
+                    "name": "湖南云数信息科技有限公司",
+                    "size": {
+                        "code": "2",
+                        "name": "20-99人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC423724180J00226870603.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "6K-12K",
+                "emplType": "全职",
+                "jobName": "C#/asp.net软件工程师",
+                "industry": "160400,160000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.208984",
+                    "lon": "112.890185"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-06 20:28:13",
+                "createDate": "2018-12-06 10:44:54",
+                "endDate": "2019-01-05 10:44:54",
+                "welfare": [
+                    "五险一金",
+                    "绩效奖金",
+                    "创业公司",
+                    "员工旅游",
+                    "14薪"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.1667,
+                "score": 326.668,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 0,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"绩效奖金\",\"创业公司\",\"员工旅游\",\"14薪\",\"带团队\",\"项目奖金\"],\"companyTag\":null,\"skill\":[\"C#/.NET\",\"WCF\"],\"refreshLevel\":0,\"chatWindow\":10}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": ""
+            },
+            {
+                "number": "CC133319432J90252915000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ133319430",
+                    "url": "http://special.zhaopin.com/cs/2012/wasion030774/index.htm",
+                    "name": "威胜集团",
+                    "size": {
+                        "code": "5",
+                        "name": "1000-9999人"
+                    },
+                    "type": {
+                        "code": "8",
+                        "name": "股份制企业"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/133319432252915.htm",
+                "workingExp": {
+                    "code": "103",
+                    "name": "1-3年"
+                },
+                "eduLevel": {
+                    "code": "4",
+                    "name": "本科"
+                },
+                "salary": "10K-12K",
+                "emplType": "全职",
+                "jobName": "C#软件工程师",
+                "industry": "121200,160500,160200,160400",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "0",
+                    "lon": "0"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-13 10:34:01",
+                "createDate": "2018-11-21 17:29:17",
+                "endDate": "2018-12-21 17:29:17",
+                "welfare": [
+                    "五险一金",
+                    "周末双休",
+                    "绩效奖金",
+                    "包住",
+                    "包吃"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.4,
+                "score": 324,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"周末双休\",\"绩效奖金\",\"包住\",\"包吃\",\"带薪年假\",\"节日福利\",\"免费班车\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": ""
+            },
+            {
+                "number": "CC133319432J00089982808",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "44",
+                            "name": "高级软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,高级软件工程师"
+                },
+                "company": {
+                    "number": "CZ133319430",
+                    "url": "http://special.zhaopin.com/cs/2012/wasion030774/index.htm",
+                    "name": "威胜集团",
+                    "size": {
+                        "code": "5",
+                        "name": "1000-9999人"
+                    },
+                    "type": {
+                        "code": "8",
+                        "name": "股份制企业"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC133319432J00089982808.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "4",
+                    "name": "本科"
+                },
+                "salary": "12K-15K",
+                "emplType": "全职",
+                "jobName": "c#高级软件工程师",
+                "industry": "121200,160500,160200,160400",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.223117",
+                    "lon": "112.869409"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-13 10:33:03",
+                "createDate": "2018-12-11 15:12:48",
+                "endDate": "2019-01-10 15:12:48",
+                "welfare": [
+                    "五险一金",
+                    "周末双休",
+                    "绩效奖金",
+                    "包住",
+                    "包吃"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0,
+                "score": 308,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"周末双休\",\"绩效奖金\",\"包住\",\"包吃\",\"带薪年假\",\"节日福利\",\"免费班车\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": ""
+            },
+            {
+                "number": "CC143316927J00065982405",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ143316920",
+                    "url": "https://company.zhaopin.com/CZ143316920.htm",
+                    "name": "深圳市赢时胜信息技术股份有限公司",
+                    "size": {
+                        "code": "5",
+                        "name": "1000-9999人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC143316927J00065982405.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "4",
+                    "name": "本科"
+                },
+                "salary": "10K-15K",
+                "emplType": "全职",
+                "jobName": "c#开发工程师",
+                "industry": "160400,160000,180000",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.223978",
+                    "lon": "112.988432"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        },
+                        {
+                            "code": "2227",
+                            "name": "开福区"
+                        }
+                    ],
+                    "display": "长沙-开福区"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-14 14:27:26",
+                "createDate": "2018-12-14 14:27:21",
+                "endDate": "2019-01-13 14:27:21",
+                "welfare": [
+                    "五险一金",
+                    "年底双薪",
+                    "股票期权",
+                    "加班补助",
+                    "通讯补助"
+                ],
+                "saleType": 0,
+                "feedbackRation": 1,
+                "score": 306.8,
+                "resumeCount": 5,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"年底双薪\",\"股票期权\",\"加班补助\",\"通讯补助\",\"带薪年假\",\"员工旅游\",\"绩效奖金\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":20}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最近",
+                "rate": "100%"
+            },
+            {
+                "number": "CC637365987J00147521601",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "45",
+                            "name": "软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,软件工程师"
+                },
+                "company": {
+                    "number": "CZ637365980",
+                    "url": "https://company.zhaopin.com/CZ637365980.htm",
+                    "name": "长沙亿骞信息科技有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC637365987J00147521601.htm",
+                "workingExp": {
+                    "code": "-1",
+                    "name": "不限"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "4.5K-6K",
+                "emplType": "全职",
+                "jobName": "Python 后端开发实习生",
+                "industry": "160400,160500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.198774",
+                    "lon": "112.984927"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-16 15:50:02",
+                "createDate": "2018-12-14 10:07:25",
+                "endDate": "2019-01-13 10:07:25",
+                "welfare": [
+                    "周末双休",
+                    "五险一金",
+                    "包住",
+                    "餐补",
+                    "带薪年假"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.7162,
+                "score": 304.64655,
+                "resumeCount": 67,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"周末双休\",\"五险一金\",\"包住\",\"餐补\",\"带薪年假\",\"年底双薪\",\"员工旅游\",\"节日福利\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":2,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": "71%"
+            },
+            {
+                "number": "CC421432017J90250367000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "44",
+                            "name": "高级软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,高级软件工程师"
+                },
+                "company": {
+                    "number": "CZ421432010",
+                    "url": "https://company.zhaopin.com/CZ421432010.htm",
+                    "name": "湖南由创科技有限责任公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/421432017250367.htm",
+                "workingExp": {
+                    "code": "305",
+                    "name": "3-5年"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "10K-15K",
+                "emplType": "全职",
+                "jobName": ".net开发工程师",
+                "industry": "160400,210500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.215004",
+                    "lon": "112.893123"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        },
+                        {
+                            "code": "2226",
+                            "name": "岳麓区"
+                        }
+                    ],
+                    "display": "长沙-岳麓区"
+                },
+                "applyType": "1",
+                "updateDate": "2018-11-29 16:15:11",
+                "createDate": "2018-11-29 16:15:11",
+                "endDate": "2018-12-29 16:15:11",
+                "welfare": [
+                    "五险一金",
+                    "年底双薪",
+                    "绩效奖金",
+                    "带薪年假",
+                    "员工旅游"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.88,
+                "score": 302.24,
+                "resumeCount": 20,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"年底双薪\",\"绩效奖金\",\"带薪年假\",\"员工旅游\",\"节日福利\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":0,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "招聘中",
+                "rate": "88%"
+            },
+            {
+                "number": "CC637365987J00147490201",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "864",
+                            "name": "WEB前端开发"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,WEB前端开发"
+                },
+                "company": {
+                    "number": "CZ637365980",
+                    "url": "https://company.zhaopin.com/CZ637365980.htm",
+                    "name": "长沙亿骞信息科技有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC637365987J00147490201.htm",
+                "workingExp": {
+                    "code": "-1",
+                    "name": "不限"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "4K-6K",
+                "emplType": "全职",
+                "jobName": "web 前端开发工程师实习生（Python方向）",
+                "industry": "160400,160500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.198774",
+                    "lon": "112.984927"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-16 16:34:31",
+                "createDate": "2018-12-14 10:07:24",
+                "endDate": "2019-01-13 10:07:24",
+                "welfare": [
+                    "周末双休",
+                    "五险一金",
+                    "包住",
+                    "餐补",
+                    "员工旅游"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.8539,
+                "score": 299.99472,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"周末双休\",\"五险一金\",\"包住\",\"餐补\",\"员工旅游\",\"节日福利\",\"带薪年假\",\"年底双薪\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":2,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": "85%"
+            },
+            {
+                "number": "CC637365987J00148211301",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "53",
+                            "name": "互联网软件工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,互联网软件工程师"
+                },
+                "company": {
+                    "number": "CZ637365980",
+                    "url": "https://company.zhaopin.com/CZ637365980.htm",
+                    "name": "长沙亿骞信息科技有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "5",
+                        "name": "民营"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/CC637365987J00148211301.htm",
+                "workingExp": {
+                    "code": "0",
+                    "name": "无经验"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "4K-6K",
+                "emplType": "全职",
+                "jobName": "大数据实习生+提供食宿",
+                "industry": "160400,160500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "28.198774",
+                    "lon": "112.984927"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        }
+                    ],
+                    "display": "长沙"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-16 16:30:48",
+                "createDate": "2018-12-14 10:07:24",
+                "endDate": "2019-01-13 10:07:24",
+                "welfare": [
+                    "五险一金",
+                    "包吃",
+                    "包住",
+                    "员工旅游",
+                    "每年多次调薪"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.8158,
+                "score": 297.59866,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"包吃\",\"包住\",\"员工旅游\",\"每年多次调薪\",\"绩效奖金\",\"全勤奖\",\"带薪年假\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":2,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": "81%"
+            },
+            {
+                "number": "CC463535987J90250450000",
+                "jobType": {
+                    "items": [
+                        {
+                            "code": "160000",
+                            "name": "软件/互联网开发/系统集成"
+                        },
+                        {
+                            "code": "2040",
+                            "name": "Java开发工程师"
+                        }
+                    ],
+                    "display": "软件/互联网开发/系统集成,Java开发工程师"
+                },
+                "company": {
+                    "number": "CZ463535980D00113594152",
+                    "url": "https://company.zhaopin.com/CZ463535980D00113594152.htm",
+                    "name": "长沙市联讯软件技术有限公司",
+                    "size": {
+                        "code": "3",
+                        "name": "100-499人"
+                    },
+                    "type": {
+                        "code": "1",
+                        "name": "国企"
+                    }
+                },
+                "positionURL": "https://jobs.zhaopin.com/463535987250450.htm",
+                "workingExp": {
+                    "code": "0",
+                    "name": "无经验"
+                },
+                "eduLevel": {
+                    "code": "5",
+                    "name": "大专"
+                },
+                "salary": "4K-6K",
+                "emplType": "全职",
+                "jobName": "初级Java开发工程师/Java实习生",
+                "industry": "210500",
+                "recruitCount": 0,
+                "geo": {
+                    "lat": "0",
+                    "lon": "0"
+                },
+                "city": {
+                    "items": [
+                        {
+                            "code": "749",
+                            "name": "长沙"
+                        },
+                        {
+                            "code": "2224",
+                            "name": "芙蓉区"
+                        }
+                    ],
+                    "display": "长沙-芙蓉区"
+                },
+                "applyType": "1",
+                "updateDate": "2018-12-16 14:35:35",
+                "createDate": "2018-11-23 10:05:25",
+                "endDate": "2018-12-23 10:05:25",
+                "welfare": [
+                    "节日福利",
+                    "周末双休",
+                    "五险一金",
+                    "年底双薪",
+                    "交通补助"
+                ],
+                "saleType": 0,
+                "feedbackRation": 0.9825,
+                "score": 285.13397,
+                "resumeCount": 0,
+                "showLicence": 0,
+                "interview": 0,
+                "tags": [],
+                "vipLevel": 1003,
+                "expandCount": 0,
+                "tagIntHighend": 0,
+                "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"节日福利\",\"周末双休\",\"五险一金\",\"年底双薪\",\"交通补助\",\"免费班车\",\"员工旅游\",\"高温补贴\"],\"companyTag\":null,\"skill\":null,\"refreshLevel\":1,\"chatWindow\":0}",
+                "duplicated": false,
+                "futureJob": false,
+                "selected": false,
+                "applied": false,
+                "collected": false,
+                "isShow": false,
+                "timeState": "最新",
+                "rate": "98%"
+            }
+        ],
+        "debugInfo": [],
+        "loginfo": [],
+        "facets": [],
+        "extend": "",
+        "method": "",
+        "taskId": "f48a9c3d-73fb-46d1-a74a-cecfa161ab6b",
+        "scores": null
+    }
+}

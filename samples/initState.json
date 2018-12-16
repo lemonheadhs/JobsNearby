@@ -1,0 +1,523 @@
+{
+    "loaded": true,
+    "companyCode": "CZ423724180",
+    "cookieCity": {
+        "id": 489,
+        "name": "全国"
+    },
+    "user": {
+        "name": "",
+        "Resume": {}
+    },
+    "cityInfo": "",
+    "industryInfo": "",
+    "company": {
+        "address": "麓谷新长海中心B2栋",
+        "city": "长沙",
+        "cityId": 749,
+        "companyId": 42372418,
+        "companyNumber": "CZ423724180",
+        "companySize": "20-99人",
+        "companySizeId": 2,
+        "companyTelephone": "13549673982",
+        "companyType": "民营",
+        "companyTypeId": 5,
+        "companyUrl": "http://www.herevend.com",
+        "coordinate": {
+            "latitude": 28.208984,
+            "longitude": 112.890185
+        },
+        "dataRefer": 1,
+        "industries": [
+            "计算机软件",
+            "IT服务(系统/数据/维护)"
+        ],
+        "industryIds": [
+            160400,
+            160000
+        ],
+        "introduceUrl": "http://company.zhaopin.com/CZ423724180.htm",
+        "logoUrl": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+        "province": "湖南",
+        "provinceId": 547,
+        "rootCompanyId": 42372418,
+        "rootCompanyNumber": "CZ42372418",
+        "status": 30,
+        "tags": [
+            "五险一金",
+            "绩效奖金",
+            "年终分红",
+            "加班补助",
+            "创业公司",
+            "员工旅游",
+            "项目奖金"
+        ],
+        "title": "湖南云数信息科技有限公司",
+        "vipInfo": null,
+        "orgInfoPics": []
+    },
+    "comLayer": {
+        "refreshType": false,
+        "targetType": "",
+        "collectParam": "",
+        "applyParam": {
+            "num": "",
+            "cityId": ""
+        },
+        "show": false,
+        "loginState": 0,
+        "switchOff": 0,
+        "title": "",
+        "apllyWarn": "",
+        "resume": [],
+        "coverletter": [],
+        "subsidiaryFlag": false
+    },
+    "recruitmentJob": [
+        {
+            "number": "CC423724180J00227251103",
+            "id": "227251103",
+            "jobType": {
+                "items": [
+                    {
+                        "code": "4082000",
+                        "name": "市场"
+                    },
+                    {
+                        "code": "159",
+                        "name": "市场营销经理"
+                    }
+                ],
+                "display": "市场,市场营销经理"
+            },
+            "company": {
+                "number": "CZ423724180",
+                "id": 42372418,
+                "url": "http://company.zhaopin.com/CZ423724180.htm",
+                "name": "湖南云数信息科技有限公司",
+                "size": {
+                    "code": "2",
+                    "name": "20-99人"
+                },
+                "type": {
+                    "code": "5",
+                    "name": "民营"
+                }
+            },
+            "positionURL": "http://jobs.zhaopin.com/CC423724180J00227251103.htm",
+            "workingExp": {
+                "code": "305",
+                "name": "3-5年"
+            },
+            "eduLevel": {
+                "code": "5",
+                "name": "大专"
+            },
+            "salary": {
+                "min": 6000,
+                "max": 12000,
+                "discuss": 0
+            },
+            "emplType": "全职",
+            "jobDesc": "  岗位职责  1、负责公司产品定位、产品营销主要目标和计划，制定、参与或协助上层执行相关的政策和制度；  2、 熟悉掌握所在行业资讯、政策等信息，熟悉同行业竞争对手产品情况等。   3、与客户服务部门以及其他部门保持沟通以便能分析市场趋势和客户需求；  4、负责与销售有关的广告宣传计划、促销活动等，并负责其策划，执行，及评估；  5、进行商业调查，提供产品和服务的市场定位分析报告；  6、推广新产品，协调相关事宜。     任职资格  1、大学专科以上学历，市场营销、企业管理专业优先；  2、熟悉快消行业或新零售行业，具备良好地经营管理知识面及营销实战经验者优先；  3、对市场有敏锐的触觉，擅长结合实际改善客户经营绩效；  4、具有良好的亲和力、优秀的适应能力、独立的学历能力及良好的团队合作精神；  5、有软件产品、大数据相关从业经验。 ",
+            "jobName": "市场营销经理",
+            "industry": "160400,160000",
+            "recruitCount": 0,
+            "geo": {
+                "lat": "28.208984",
+                "lon": "112.890185"
+            },
+            "city": {
+                "items": [
+                    {
+                        "code": "749",
+                        "name": "长沙"
+                    }
+                ],
+                "display": "长沙"
+            },
+            "applyType": "1",
+            "updateDate": "2018-12-06 20:28:49",
+            "createDate": "2018-12-06 20:02:26",
+            "endDate": "2019-01-05 20:02:26",
+            "welfare": "五险一金,绩效奖金,创业公司,员工旅游",
+            "saleType": 0,
+            "feedbackRation": 0,
+            "score": 0.35355338,
+            "resumeCount": 0,
+            "showLicence": 0,
+            "interview": 0,
+            "companyLogo": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+            "tags": [],
+            "vipLevel": 0,
+            "expandCount": 0,
+            "tagIntHighend": 0,
+            "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"绩效奖金\",\"创业公司\",\"员工旅游\"],\"companyTag\":null,\"skill\":[\"营销管理\",\"市场策划\",\"市场竞争分析\",\"市场分析\",\"商业策划\",\"会务策划\"],\"refreshLevel\":0,\"chatWindow\":10}",
+            "duplicated": false,
+            "futureJob": false
+        },
+        {
+            "number": "CC423724180J00226918803",
+            "id": "226918803",
+            "jobType": {
+                "items": [
+                    {
+                        "code": "160200",
+                        "name": "互联网产品/运营管理"
+                    },
+                    {
+                        "code": "675",
+                        "name": "互联网产品专员/助理"
+                    }
+                ],
+                "display": "互联网产品/运营管理,互联网产品专员/助理"
+            },
+            "company": {
+                "number": "CZ423724180",
+                "id": 42372418,
+                "url": "http://company.zhaopin.com/CZ423724180.htm",
+                "name": "湖南云数信息科技有限公司",
+                "size": {
+                    "code": "2",
+                    "name": "20-99人"
+                },
+                "type": {
+                    "code": "5",
+                    "name": "民营"
+                }
+            },
+            "positionURL": "http://jobs.zhaopin.com/CC423724180J00226918803.htm",
+            "workingExp": {
+                "code": "103",
+                "name": "1-3年"
+            },
+            "eduLevel": {
+                "code": "5",
+                "name": "大专"
+            },
+            "salary": {
+                "min": 4000,
+                "max": 8000,
+                "discuss": 0
+            },
+            "emplType": "全职",
+            "jobDesc": "  岗位职责  1、设计公司开发中的平台产品方案；  2、对接客户需求，提出解决方案，协调跟进项目进度；进行市场需求收集、分析，并进行竞品产品分析调研并形成调研报告；  3、制作产品原型，撰写产品文档；  4、跟踪产品开发进度，接收各部门意见，并进行反馈沟通；关注用户需求，收集用户反馈，分析用户行为，提升产品用户体验；  5、跟进运营需求，在产品负责人的带领下设计产品迭代需求。     任职资格  1、专科及以上学历，计算机和相关专业；  2、具备数据收集分析，文档撰写能力；  3、良好的逻辑能力，学习理解能力强，具备优秀的沟通协作、执行能力；  4、思维活跃，对用户体验敏感，有较强的洞察能力，创新意识和责任心。     此岗位须在宁乡公司面试且工作一年左右时间。介意勿投！！！ ",
+            "jobName": "产品专员",
+            "industry": "160400,160000",
+            "recruitCount": 0,
+            "geo": {
+                "lat": "28.208984",
+                "lon": "112.890185"
+            },
+            "city": {
+                "items": [
+                    {
+                        "code": "749",
+                        "name": "长沙"
+                    }
+                ],
+                "display": "长沙"
+            },
+            "applyType": "1",
+            "updateDate": "2018-12-06 20:33:29",
+            "createDate": "2018-12-06 11:33:02",
+            "endDate": "2019-01-05 11:33:02",
+            "welfare": "五险一金,包住,加班补助,员工旅游,创业公司",
+            "saleType": 0,
+            "feedbackRation": 0,
+            "score": 0.35355338,
+            "resumeCount": 0,
+            "showLicence": 0,
+            "interview": 0,
+            "companyLogo": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+            "tags": [],
+            "vipLevel": 0,
+            "expandCount": 0,
+            "tagIntHighend": 0,
+            "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"包住\",\"加班补助\",\"项目奖金\",\"员工旅游\",\"创业公司\"],\"companyTag\":null,\"skill\":[\"产品设计\",\"竞品分析\",\"需求分析\",\"项目管理\",\"交互\",\"用户体验\"],\"refreshLevel\":0,\"chatWindow\":10}",
+            "duplicated": false,
+            "futureJob": false
+        },
+        {
+            "number": "CC423724180J00226918903",
+            "id": "226918903",
+            "jobType": {
+                "items": [
+                    {
+                        "code": "160200",
+                        "name": "互联网产品/运营管理"
+                    },
+                    {
+                        "code": "675",
+                        "name": "互联网产品专员/助理"
+                    }
+                ],
+                "display": "互联网产品/运营管理,互联网产品专员/助理"
+            },
+            "company": {
+                "number": "CZ423724180",
+                "id": 42372418,
+                "url": "http://company.zhaopin.com/CZ423724180.htm",
+                "name": "湖南云数信息科技有限公司",
+                "size": {
+                    "code": "2",
+                    "name": "20-99人"
+                },
+                "type": {
+                    "code": "5",
+                    "name": "民营"
+                }
+            },
+            "positionURL": "http://jobs.zhaopin.com/CC423724180J00226918903.htm",
+            "workingExp": {
+                "code": "103",
+                "name": "1-3年"
+            },
+            "eduLevel": {
+                "code": "5",
+                "name": "大专"
+            },
+            "salary": {
+                "min": 4000,
+                "max": 8000,
+                "discuss": 0
+            },
+            "emplType": "全职",
+            "jobDesc": "  岗位职责  1、设计公司开发中的平台产品方案；  2、对接客户需求，提出解决方案，协调跟进项目进度；进行市场需求收集、分析，并进行竞品产品分析调研并形成调研报告；  3、制作产品原型，撰写产品文档；  4、跟踪产品开发进度，接收各部门意见，并进行反馈沟通；关注用户需求，收集用户反馈，分析用户行为，提升产品用户体验；  5、跟进运营需求，在产品负责人的带领下设计产品迭代需求。     任职资格  1、专科及以上学历，计算机和相关专业；  2、具备数据收集分析，文档撰写能力；  3、良好的逻辑能力，学习理解能力强，具备优秀的沟通协作、执行能力；  4、思维活跃，对用户体验敏感，有较强的洞察能力，创新意识和责任心。     此岗位须在宁乡公司面试且工作一年左右时间。介意勿投！！！ ",
+            "jobName": "产品专员",
+            "industry": "160400,160000",
+            "recruitCount": 0,
+            "geo": {
+                "lat": "28.249986",
+                "lon": "112.553625"
+            },
+            "city": {
+                "items": [
+                    {
+                        "code": "749",
+                        "name": "长沙"
+                    },
+                    {
+                        "code": "2407",
+                        "name": "宁乡县"
+                    }
+                ],
+                "display": "长沙-宁乡县"
+            },
+            "applyType": "1",
+            "updateDate": "2018-12-06 20:33:29",
+            "createDate": "2018-12-06 11:33:02",
+            "endDate": "2019-01-05 11:33:02",
+            "welfare": "五险一金,包住,加班补助,员工旅游,创业公司",
+            "saleType": 0,
+            "feedbackRation": 0,
+            "score": 0.35355338,
+            "resumeCount": 0,
+            "showLicence": 0,
+            "interview": 0,
+            "companyLogo": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+            "tags": [],
+            "vipLevel": 0,
+            "expandCount": 0,
+            "tagIntHighend": 0,
+            "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"包住\",\"加班补助\",\"项目奖金\",\"员工旅游\",\"创业公司\"],\"companyTag\":null,\"skill\":[\"产品设计\",\"竞品分析\",\"需求分析\",\"项目管理\",\"交互\",\"用户体验\"],\"refreshLevel\":0,\"chatWindow\":10}",
+            "duplicated": false,
+            "futureJob": false
+        },
+        {
+            "number": "CC423724180J00226875003",
+            "id": "226875003",
+            "jobType": {
+                "items": [
+                    {
+                        "code": "160000",
+                        "name": "软件/互联网开发/系统集成"
+                    },
+                    {
+                        "code": "47",
+                        "name": "数据库开发工程师"
+                    }
+                ],
+                "display": "软件/互联网开发/系统集成,数据库开发工程师"
+            },
+            "company": {
+                "number": "CZ423724180",
+                "id": 42372418,
+                "url": "http://company.zhaopin.com/CZ423724180.htm",
+                "name": "湖南云数信息科技有限公司",
+                "size": {
+                    "code": "2",
+                    "name": "20-99人"
+                },
+                "type": {
+                    "code": "5",
+                    "name": "民营"
+                }
+            },
+            "positionURL": "http://jobs.zhaopin.com/CC423724180J00226875003.htm",
+            "workingExp": {
+                "code": "305",
+                "name": "3-5年"
+            },
+            "eduLevel": {
+                "code": "5",
+                "name": "大专"
+            },
+            "salary": {
+                "min": 8000,
+                "max": 16000,
+                "discuss": 0
+            },
+            "emplType": "全职",
+            "jobDesc": "  1. 负责数据库集群的日常维护、安装、升级、建设规划、性能监控、健康性检查及故障诊断排除；  2. 制定完善的数据库备份恢复方案，快速进行数据库备份和恢复，确保业务的正常运行；  3. 负责定期数据库巡检、数据库日志检查、结合应用架构及系统特性进行运行状态分析、优化运行瓶颈，并提供改进方案以支持系统高效运行；  4. 配合开发部门新平台的上线支持；  5. 参与系统架构规划和部署，在数据库的安全性、可用性、高性能方面进行规划设计，对当前数据库做出整体评估与改进性建议；  6. 领导安排的其他工作。  任职要求：   1、熟悉MSSQL服务器的基础架构与配置管理；  2、熟悉MSSQL日常监控、维护、备份和恢复，性能跟踪及故障处理；  3、熟悉MSSQL常见容灾解决方案，能对数据库的安全、容灾等计划进行策略制定与实施，保证数据库的安全性与高��用性；  4、有分布式数据库搭建，数据库分区管理等经验，熟悉aways on部署的者优先；  5、精通sql语言，对数据库优化、sql优化等有相关经验；  6、熟悉数据仓库理论和数据模型设计，有数据仓库和业务数据集市建设经验，能进行业务模型抽象、并对数据模型进行设计开发； 7、相关工作经验3年及以上。",
+            "jobName": "数据库工程师dba",
+            "industry": "160400,160000",
+            "recruitCount": 0,
+            "geo": {
+                "lat": "28.208984",
+                "lon": "112.890185"
+            },
+            "city": {
+                "items": [
+                    {
+                        "code": "749",
+                        "name": "长沙"
+                    }
+                ],
+                "display": "长沙"
+            },
+            "applyType": "1",
+            "updateDate": "2018-12-06 20:34:35",
+            "createDate": "2018-12-06 10:49:24",
+            "endDate": "2019-01-05 10:49:24",
+            "welfare": "五险一金,加班补助,员工旅游,14薪,创业公司",
+            "saleType": 0,
+            "feedbackRation": 0,
+            "score": 0.35355338,
+            "resumeCount": 2,
+            "showLicence": 0,
+            "interview": 0,
+            "companyLogo": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+            "tags": [],
+            "vipLevel": 0,
+            "expandCount": 0,
+            "tagIntHighend": 0,
+            "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"加班补助\",\"员工旅游\",\"14薪\",\"项目奖金\",\"创业公司\"],\"companyTag\":null,\"skill\":[\"DBA\",\"数据库开发\",\"数据仓库\",\"数据压缩\"],\"refreshLevel\":0,\"chatWindow\":10}",
+            "duplicated": false,
+            "futureJob": false
+        },
+        {
+            "number": "CC423724180J00226870603",
+            "id": "226870603",
+            "jobType": {
+                "items": [
+                    {
+                        "code": "160000",
+                        "name": "软件/互联网开发/系统集成"
+                    },
+                    {
+                        "code": "45",
+                        "name": "软件工程师"
+                    }
+                ],
+                "display": "软件/互联网开发/系统集成,软件工程师"
+            },
+            "company": {
+                "number": "CZ423724180",
+                "id": 42372418,
+                "url": "http://company.zhaopin.com/CZ423724180.htm",
+                "name": "湖南云数信息科技有限公司",
+                "size": {
+                    "code": "2",
+                    "name": "20-99人"
+                },
+                "type": {
+                    "code": "5",
+                    "name": "民营"
+                }
+            },
+            "positionURL": "http://jobs.zhaopin.com/CC423724180J00226870603.htm",
+            "workingExp": {
+                "code": "103",
+                "name": "1-3年"
+            },
+            "eduLevel": {
+                "code": "5",
+                "name": "大专"
+            },
+            "salary": {
+                "min": 6000,
+                "max": 12000,
+                "discuss": 0
+            },
+            "emplType": "全职",
+            "jobDesc": "  1、计算机及相关专业专科以上学历；   2、具有3年以上C#相关项目开发经验；   3、对.Net架构有良好的了解，擅长B/S,有微信公众号开发，会员开发类经验者佳；   4、熟悉 MVC ；  5、熟悉设计模式，有应用程序框架搭建经验者优先；   6、熟悉http通讯、socket通讯，supersocket，串口通讯；   7、熟悉多线程；   8、熟悉SQL　server数据库的使用；   9、有一定的设计文档编写经验；   10、具有良好的代码编写风格和习惯，工作严谨细致，勤奋踏实，富有责任心，善于思考问题。 ",
+            "jobName": "C#/asp.net软件工程师",
+            "industry": "160400,160000",
+            "recruitCount": 0,
+            "geo": {
+                "lat": "28.208984",
+                "lon": "112.890185"
+            },
+            "city": {
+                "items": [
+                    {
+                        "code": "749",
+                        "name": "长沙"
+                    }
+                ],
+                "display": "长沙"
+            },
+            "applyType": "1",
+            "updateDate": "2018-12-06 20:28:13",
+            "createDate": "2018-12-06 10:44:54",
+            "endDate": "2019-01-05 10:44:54",
+            "welfare": "五险一金,绩效奖金,创业公司,员工旅游,14薪",
+            "saleType": 0,
+            "feedbackRation": 0.1667,
+            "score": 0.35355338,
+            "resumeCount": 0,
+            "showLicence": 0,
+            "interview": 0,
+            "companyLogo": "https://zhaopin-rd5-pub.oss-cn-beijing.aliyuncs.com/imgs/company/46a5dc92249bdec1115b493fb68c16c3.jpg",
+            "tags": [],
+            "vipLevel": 0,
+            "expandCount": 0,
+            "tagIntHighend": 0,
+            "positionLabel": "{\"qualifications\":null,\"role\":null,\"level\":null,\"jobLight\":[\"五险一金\",\"绩效奖金\",\"创业公司\",\"员工旅游\",\"14薪\",\"带团队\",\"项目奖金\"],\"companyTag\":null,\"skill\":[\"C#/.NET\",\"WCF\"],\"refreshLevel\":0,\"chatWindow\":10}",
+            "duplicated": false,
+            "futureJob": false
+        }
+    ],
+    "recruitmentCityList": {
+        "data": [
+            {
+                "name": "长沙",
+                "code": "749",
+                "total": 5
+            }
+        ],
+        "total": 5,
+        "method": "rd_position"
+    },
+    "recruitmentCitySelected": {
+        "name": "长沙",
+        "code": "749",
+        "total": 5
+    },
+    "userCityPage": {},
+    "hasFetchedUserCityPage": false,
+    "basic": {
+        "uid": "2323",
+        "appid": "A23",
+        "pagecode": 4021,
+        "wdgtid": "A2-4",
+        "evtid": "click",
+        "chnlname": ""
+    },
+    "props": {
+        "jobid": "",
+        "isgray": 1,
+        "companyid": ""
+    }
+}

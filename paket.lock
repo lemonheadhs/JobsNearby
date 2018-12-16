@@ -1,0 +1,7 @@
+RESTRICTION: || (== net472) (== netcoreapp2.1)
+NUGET
+  remote: https://www.nuget.org/api/v2
+    FSharp.Core (4.5.4)
+    FSharp.Data (3.0)
+      FSharp.Core (>= 4.0.0.1) - restriction: || (== net472) (&& (== netcoreapp2.1) (>= net45))
+      FSharp.Core (>= 4.3.4) - restriction: || (&& (== net472) (< net45)) (== netcoreapp2.1)
