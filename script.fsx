@@ -1,6 +1,7 @@
-open FSharp.Data.Runtime.BaseTypes
-#r "packages/FSharp.Data/lib/net45/FSharp.Data.dll"
-
+// open FSharp.Data.Runtime.BaseTypes
+// #r "packages/FSharp.Data/lib/net45/FSharp.Data.dll"
+// #r "packages/FSharp.Azure.StorageTypeProvider/lib/"
+#load ".paket/load/main.group.fsx"
 
 
 open FSharp.Data
@@ -52,8 +53,23 @@ let writefile () =
 
 writefile()
 
+// --------------------------
 
+open FSharp.Azure.StorageTypeProvider
+open FSharp.Azure.StorageTypeProvider.Table
+// open ProviderImplementation
 
+type Local = AzureTypeProvider<"UserDevelopmentStorage=true", autoRefresh = 5>
 
+let Companies = Local.Tables.Companies
 
+Companies.Get(Row "C001002003", Partition "Company")
+
+let TestQueue = Local.Queues.test
+
+TestQueue.Enqueue("Another greeting!!!")
+
+let dequeueMessage = (TestQueue.Dequeue() |> Async.RunSynchronously).Value
+
+dequeueMessage.AsString.Value
 

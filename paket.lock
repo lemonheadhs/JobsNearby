@@ -1,7 +1,13 @@
-RESTRICTION: || (== net472) (== netcoreapp2.1)
+RESTRICTION: == net472
 NUGET
   remote: https://www.nuget.org/api/v2
+    FSharp.Azure.StorageTypeProvider (1.9.5)
+      WindowsAzure.Storage (>= 7.2.1)
     FSharp.Core (4.5.4)
     FSharp.Data (3.0)
-      FSharp.Core (>= 4.0.0.1) - restriction: || (== net472) (&& (== netcoreapp2.1) (>= net45))
-      FSharp.Core (>= 4.3.4) - restriction: || (&& (== net472) (< net45)) (== netcoreapp2.1)
+      FSharp.Core (>= 4.0.0.1)
+    Microsoft.Azure.KeyVault.Core (3.0.1)
+    Newtonsoft.Json (12.0.1)
+    WindowsAzure.Storage (9.3.3)
+      Microsoft.Azure.KeyVault.Core (>= 1.0)
+      Newtonsoft.Json (>= 10.0.2)

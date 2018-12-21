@@ -1,8 +1,8 @@
 source https://www.nuget.org/api/v2
-framework: netcoreapp2.1,net472
+framework: net472
 
 nuget FSharp.Data
-
+nuget FSharp.Azure.StorageTypeProvider
 
 
 
