@@ -12,7 +12,9 @@
 samples/*
 !samples/jobs.json
 !samples/initState.json
-
+!samples/Companies.typed.csv
+!samples/JobData.typed.csv
+!samples/profiles.typed.csv
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)

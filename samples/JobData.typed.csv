@@ -1,0 +1,2 @@
+PartitionKey,RowKey,Timestamp,category,category@type,color,color@type,companyName,companyName@type,distance,distance@type,link,link@type,markerRadius,markerRadius@type,name,name@type,salaryEstimate,salaryEstimate@type,scale,scale@type
+profile id 1|2018-12-23_01,CC671779928J90250465000,2018-12-23T09:29:51.140Z,5,Edm.String,pink,Edm.String,test company,Edm.String,25,Edm.String,http://www.baidu.com,Edm.String,4,Edm.Int32,test job,Edm.String,8000,Edm.Double,100,Edm.String

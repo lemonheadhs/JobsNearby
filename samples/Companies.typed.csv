@@ -1,0 +1,2 @@
+PartitionKey,RowKey,Timestamp,DetailUrl,DetailUrl@type,Latitude,Latitude@type,Longitude,Longitude@type
+Normal,C001002003,2018-12-23T08:44:19.887Z,http://www.baidu.com,Edm.String,36.00,Edm.String,23,Edm.Double

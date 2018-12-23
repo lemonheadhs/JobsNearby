@@ -3,7 +3,7 @@ framework: net472
 
 nuget FSharp.Data
 nuget FSharp.Azure.StorageTypeProvider
-
+nuget Newtonsoft.Json
 
 
 
