@@ -1,6 +1,7 @@
 #load ".paket/load/main.group.fsx"
 
 
+open System.Collections.Generic
 open FSharp.Data
 
 System.Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
@@ -36,16 +37,18 @@ type CompIntro = JsonProvider<"./samples/initState.json", ResolutionFolder = __S
 
 let (>=>) fn1 fn2 = fn1 >> (Option.bind fn2)
 
-let doc = HtmlDocument.Load("https://company.zhaopin.com/CZ423724180.htm")
-doc.CssSelect("script")
-|> List.choose (
-    (HtmlNode.elements >> List.tryHead) >=> 
-    (HtmlNode.innerText >> function 
-    | s when s.StartsWith("__INITIAL_STATE__") -> Some s 
-    | _ -> None))
-|> (List.tryHead >> Option.map(fun s -> s.Replace("__INITIAL_STATE__={", "{")))
-|> Option.map(CompIntro.Parse)
-|> Option.map(fun info -> info.Company.Coordinate)
+let retrieveGeoFromPage (pageUrl: string) = 
+  let doc = HtmlDocument.Load(pageUrl)
+  doc.CssSelect("script")
+  |> List.choose (
+      (HtmlNode.elements >> List.tryHead) >=> 
+      (HtmlNode.innerText >> function 
+      | s when s.StartsWith("__INITIAL_STATE__") -> Some s 
+      | _ -> None))
+  |> (List.tryHead >> Option.map(fun s -> s.Replace("__INITIAL_STATE__={", "{")))
+  |> Option.map(CompIntro.Parse)
+  |> Option.map(fun info -> float info.Company.Coordinate.Longitude, float info.Company.Coordinate.Latitude)
+  |> Option.defaultWith(fun() -> failwith (sprintf "fail to retrieve geo info from %s" pageUrl))
 
 
 let writefile () =
@@ -145,16 +148,106 @@ test.GetProperty("code")
 
 open Newtonsoft.Json
 open System.Collections.Generic
+open Microsoft.FSharp.Core.Printf
+open Microsoft.FSharp.Collections
+open System.Text.RegularExpressions
 
-Companies.Get(Row job1.Company.Number, Partition "Normal")
+let mapRouteUrl ak origin (destinations: (float*float) seq) = 
+    let fmt: StringFormat<(string -> string -> string -> string)> = 
+      "http://api.map.baidu.com/routematrix/v2/driving?output=json&origins=%s&destinations=%s&ak=%s"
+    let coordinateString c =
+      let f,s = c
+      sprintf "%f,%f" f s
+    let destPortion =
+      destinations
+      |> Seq.map coordinateString
+      |> fun strs -> System.String.Join("|", strs)
+    sprintf fmt origin destPortion ak
+
+let Profiles = Local.Tables.Profiles
+
+type RouteInfo = JsonProvider<"./samples/routeSearchResp.json", ResolutionFolder = __SOURCE_DIRECTORY__>
+
+let calcDistance homeLoc compGeoInfo =
+  mapRouteUrl "" (homeLoc |> Option.defaultValue("")) [|compGeoInfo|]
+  |> RouteInfo.Load
+  |> fun r -> 
+    match r.Status with
+    | 1 -> r.Result |> Seq.tryHead |> Option.map(fun o -> (float o.Distance.Value)/1000.) |> Option.defaultValue(0.)
+    | _ -> 0.
+
+Profiles.Get(Row "profile id 1", Partition "profile")
 |> function
-| Some comp -> 
-  let map = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(comp.Distances |> Option.defaultValue("{}"))
-  map.TryGetValue("profile id 1")
+| None -> 0.
+| Some profile -> 
+  Companies.Get(Row job1.Company.Number, Partition "Normal")
   |> function
-  | true, v -> v
-  | false, _ -> 
-  ()
-| None -> ()
+  | Some comp -> 
+    let map = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(comp.Distances |> Option.defaultValue("{}"))
+    map.TryGetValue("profile id 1")
+    |> function
+    | true, v -> float v
+    | false, _ -> 
+      let distance, latitude, longitude =
+        match comp.Latitude, comp.Longitude with
+        | None,_ | _,None | Some 0., Some 0. ->
+          let companyLocation = retrieveGeoFromPage (comp.DetailUrl)
+          calcDistance profile.home companyLocation,
+          fst companyLocation,
+          snd companyLocation
+        | Some lat, Some lon ->
+          calcDistance profile.home (lat,lon),
+          lat, lon
+      map.Add("profile id 1", decimal distance)
+      let updComp = 
+        new Local.Domain.CompaniesEntity(
+          Partition comp.PartitionKey, Row comp.RowKey,
+          DetailUrl = comp.DetailUrl,
+          Latitude = (Some latitude),
+          Longitude = (Some longitude),
+          Name = comp.Name,
+          Distances = (JsonConvert.SerializeObject(map) |> Some)
+        )
+      Companies.Insert(updComp, TableInsertMode.Upsert) |> ignore
+      distance
+  | None -> 
+    Companies.Get(Row job1.Company.Number, Partition "Special")
+    |> function
+    | Some comp -> 0.
+    | None -> 
+      let regx = new Regex("\/\/special\.", RegexOptions.IgnoreCase)
+      regx.IsMatch(job1.Company.Url)
+      |> function
+      | true ->
+        let newComp = 
+          new Local.Domain.CompaniesEntity(
+            Partition "Special", Row job1.Company.Number,
+            DetailUrl = job1.Company.Url,
+            Latitude = None,
+            Longitude = None,
+            Name = job1.Company.Name,
+            Distances = None
+          )
+        Companies.Insert(newComp) |> ignore
+        0.
+      | false ->
+        let companyLocation = float job1.Geo.Lat, float job1.Geo.Lon
+        let distance = calcDistance (Some "profile.home") companyLocation
+        let map = new Dictionary<string, decimal>()
+        map.Add("profile id 1", decimal distance)
+        let newComp = 
+          new Local.Domain.CompaniesEntity(
+            Partition "Normal", Row job1.Company.Number,
+            DetailUrl = job1.Company.Url,
+            Latitude = (fst companyLocation |> Some),
+            Longitude = (snd companyLocation |> Some),
+            Name = job1.Company.Name,
+            Distances = (JsonConvert.SerializeObject(map) |> Some)
+          )
+        Companies.Insert(newComp) |> ignore
+        distance
+  |> ignore
+
+
 
 
