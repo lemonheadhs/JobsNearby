@@ -1,9 +1,20 @@
-source https://www.nuget.org/api/v2
-framework: net472
+storage: none
+source https://api.nuget.org/v3/index.json
 
-nuget FSharp.Data
-nuget FSharp.Azure.StorageTypeProvider
-nuget Newtonsoft.Json
+nuget Microsoft.AspNetCore.App
+nuget Giraffe
+nuget Microsoft.NET.Test.Sdk
+nuget Microsoft.AspNetCore.TestHost
+nuget xunit
+nuget xunit.runner.visualstudio
+
+group scripts
+    source https://www.nuget.org/api/v2
+    framework: net472
+
+    nuget FSharp.Data
+    nuget FSharp.Azure.StorageTypeProvider
+    nuget Newtonsoft.Json
 
 
 

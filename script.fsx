@@ -1,4 +1,4 @@
-#load ".paket/load/main.group.fsx"
+#load ".paket/load/scripts/scripts.group.fsx"
 
 
 open System.Collections.Generic
