@@ -8,6 +8,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open Giraffe.HttpStatusCodeHandlers
 
 // ---------------------------------
 // Models
@@ -28,21 +29,28 @@ module Views =
     let layout (content: XmlNode list) =
         html [] [
             head [] [
-                title []  [ encodedText "JobsNearby.Api" ]
+                title []  [ encodedText "Lemonhead" ]
                 link [ _rel  "stylesheet"
                        _type "text/css"
                        _href "/main.css" ]
+                script [ _src "/axios.min.js" ] []
+                script [ _src "/app.js"; _lang "javacript" ] []                   
             ]
             body [] content
         ]
 
     let partial () =
-        h1 [] [ encodedText "JobsNearby.Api" ]
+        h1 [] [ encodedText "Lemonhead" ]
 
     let index (model : Message) =
         [
             partial()
             p [] [ encodedText model.Text ]
+            div [ _class "main" ] [
+                div [ _class "actions" ] [
+                    button [ _onclick "triggerCrawling()" ] [ Text "Trigger crawling.." ]
+                ]
+            ]
         ] |> layout
 
 // ---------------------------------
@@ -62,6 +70,13 @@ let webApp =
                 route "/" >=> indexHandler "world"
                 routef "/hello/%s" indexHandler
             ]
+        subRoute "/api"
+            (choose [
+                subRoute "/jobdata"
+                    (choose [
+                        POST >=> route "/crawl" >=> Successful.OK "Hello, jobdata cwaling triggered!"
+                    ])
+            ])
         setStatusCode 404 >=> text "Not Found" ]
 
 // ---------------------------------
