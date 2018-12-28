@@ -1,2 +1,4 @@
-Microsoft.AspNetCore.App
-Giraffe
+FSharp.Core
+System.ValueTuple
+FSharp.Azure.StorageTypeProvider
+Suave

@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{ACB1E5F6-C866-4908-B4C3-4DA5B5DDBE24}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "JobsNearby.Api", "src\JobsNearby.Api\JobsNearby.Api.fsproj", "{91528197-F71C-4BE6-A579-18A45EA77811}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91528197-F71C-4BE6-A579-18A45EA77811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91528197-F71C-4BE6-A579-18A45EA77811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91528197-F71C-4BE6-A579-18A45EA77811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91528197-F71C-4BE6-A579-18A45EA77811}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E41D1C15-F5DC-4955-B7A3-280010B38BA5}
+	EndGlobalSection
+EndGlobal

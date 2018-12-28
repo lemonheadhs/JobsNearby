@@ -1,133 +1,35 @@
-module JobsNearby.Api.App
+﻿open System
+open Suave
+open FSharp.Azure.StorageTypeProvider
+open System.Threading
 
-open System
-open System.IO
-open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Cors.Infrastructure
-open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.Logging
-open Microsoft.Extensions.DependencyInjection
-open Giraffe
-open Giraffe.HttpStatusCodeHandlers
+type Azure = AzureTypeProvider<configFileName = "web.config", connectionStringName = "azureStorage">
 
-// ---------------------------------
-// Models
-// ---------------------------------
+open Suave.Operators
+open Suave.Filters
+open Suave.Successful
 
-type Message =
-    {
-        Text : string
-    }
-
-// ---------------------------------
-// Views
-// ---------------------------------
-
-module Views =
-    open GiraffeViewEngine
-
-    let layout (content: XmlNode list) =
-        html [] [
-            head [] [
-                title []  [ encodedText "Lemonhead" ]
-                link [ _rel  "stylesheet"
-                       _type "text/css"
-                       _href "/main.css" ]
-                script [ _src "/axios.min.js" ] []
-                script [ _src "/app.js"; _lang "javacript" ] []                   
-            ]
-            body [] content
-        ]
-
-    let partial () =
-        h1 [] [ encodedText "Lemonhead" ]
-
-    let index (model : Message) =
-        [
-            partial()
-            p [] [ encodedText model.Text ]
-            div [ _class "main" ] [
-                div [ _class "actions" ] [
-                    button [ _onclick "triggerCrawling()" ] [ Text "Trigger crawling.." ]
-                ]
-            ]
-        ] |> layout
-
-// ---------------------------------
-// Web app
-// ---------------------------------
-
-let indexHandler (name : string) =
-    let greetings = sprintf "Hello %s, from Giraffe!" name
-    let model     = { Text = greetings }
-    let view      = Views.index model
-    htmlView view
-
-let webApp =
+let app =
     choose [
-        GET >=>
+        GET >=> 
             choose [
-                route "/" >=> indexHandler "world"
-                routef "/hello/%s" indexHandler
+                path "/" >=> OK "Hello world"
+                path "/api/profiles" >=> OK ""
             ]
-        subRoute "/api"
-            (choose [
-                subRoute "/jobdata"
-                    (choose [
-                        POST >=> route "/crawl" >=> Successful.OK "Hello, jobdata cwaling triggered!"
-                    ])
-            ])
-        setStatusCode 404 >=> text "Not Found" ]
+    ]
 
-// ---------------------------------
-// Error handler
-// ---------------------------------
 
-let errorHandler (ex : Exception) (logger : ILogger) =
-    logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
-
-// ---------------------------------
-// Config and Main
-// ---------------------------------
-
-let configureCors (builder : CorsPolicyBuilder) =
-    builder.WithOrigins("http://localhost:8080")
-           .AllowAnyMethod()
-           .AllowAnyHeader()
-           |> ignore
-
-let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IHostingEnvironment>()
-    (match env.IsDevelopment() with
-    | true  -> app.UseDeveloperExceptionPage()
-    | false -> app.UseGiraffeErrorHandler errorHandler)
-        .UseHttpsRedirection()
-        .UseCors(configureCors)
-        .UseStaticFiles()
-        .UseGiraffe(webApp)
-
-let configureServices (services : IServiceCollection) =
-    services.AddCors()    |> ignore
-    services.AddGiraffe() |> ignore
-
-let configureLogging (builder : ILoggingBuilder) =
-    builder.AddFilter(fun l -> l.Equals LogLevel.Error)
-           .AddConsole()
-           .AddDebug() |> ignore
 
 [<EntryPoint>]
-let main _ =
-    let contentRoot = Directory.GetCurrentDirectory()
-    let webRoot     = Path.Combine(contentRoot, "WebRoot")
-    WebHostBuilder()
-        .UseKestrel()
-        .UseContentRoot(contentRoot)
-        .UseIISIntegration()
-        .UseWebRoot(webRoot)
-        .Configure(Action<IApplicationBuilder> configureApp)
-        .ConfigureServices(configureServices)
-        .ConfigureLogging(configureLogging)
-        .Build()
-        .Run()
-    0
+let main argv = 
+    let cts = new CancellationTokenSource()
+    let conf =  { defaultConfig with cancellationToken = cts.Token }
+    let listening, server = startWebServerAsync conf app
+
+    Async.Start(server, cts.Token)
+    printfn "Make requests now"
+    Console.ReadKey true |> ignore
+
+    cts.Cancel()
+
+    0 // return an integer exit code

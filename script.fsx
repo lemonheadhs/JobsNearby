@@ -1,4 +1,4 @@
-#load ".paket/load/scripts/scripts.group.fsx"
+#load ".paket/load/net472/scripts/scripts.group.fsx"
 
 
 open System.Collections.Generic
@@ -64,7 +64,7 @@ open FSharp.Azure.StorageTypeProvider
 open FSharp.Azure.StorageTypeProvider.Table
 // open ProviderImplementation
 
-type Local = AzureTypeProvider<"UserDevelopmentStorage=true", autoRefresh = 5>
+type Local = AzureTypeProvider<"UseDevelopmentStorage=true", autoRefresh = 5>
 
 let Companies = Local.Tables.Companies
 
@@ -176,77 +176,77 @@ let calcDistance homeLoc compGeoInfo =
     | 1 -> r.Result |> Seq.tryHead |> Option.map(fun o -> (float o.Distance.Value)/1000.) |> Option.defaultValue(0.)
     | _ -> 0.
 
-Profiles.Get(Row "profile id 1", Partition "profile")
-|> function
-| None -> 0.
-| Some profile -> 
-  Companies.Get(Row job1.Company.Number, Partition "Normal")
-  |> function
-  | Some comp -> 
-    let map = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(comp.Distances |> Option.defaultValue("{}"))
-    map.TryGetValue("profile id 1")
-    |> function
-    | true, v -> float v
-    | false, _ -> 
-      let distance, latitude, longitude =
-        match comp.Latitude, comp.Longitude with
-        | None,_ | _,None | Some 0., Some 0. ->
-          let companyLocation = retrieveGeoFromPage (comp.DetailUrl)
-          calcDistance profile.home companyLocation,
-          fst companyLocation,
-          snd companyLocation
-        | Some lat, Some lon ->
-          calcDistance profile.home (lat,lon),
-          lat, lon
-      map.Add("profile id 1", decimal distance)
-      let updComp = 
-        new Local.Domain.CompaniesEntity(
-          Partition comp.PartitionKey, Row comp.RowKey,
-          DetailUrl = comp.DetailUrl,
-          Latitude = (Some latitude),
-          Longitude = (Some longitude),
-          Name = comp.Name,
-          Distances = (JsonConvert.SerializeObject(map) |> Some)
-        )
-      Companies.Insert(updComp, TableInsertMode.Upsert) |> ignore
-      distance
-  | None -> 
-    Companies.Get(Row job1.Company.Number, Partition "Special")
-    |> function
-    | Some comp -> 0.
-    | None -> 
-      let regx = new Regex("\/\/special\.", RegexOptions.IgnoreCase)
-      regx.IsMatch(job1.Company.Url)
-      |> function
-      | true ->
-        let newComp = 
-          new Local.Domain.CompaniesEntity(
-            Partition "Special", Row job1.Company.Number,
-            DetailUrl = job1.Company.Url,
-            Latitude = None,
-            Longitude = None,
-            Name = job1.Company.Name,
-            Distances = None
-          )
-        Companies.Insert(newComp) |> ignore
-        0.
-      | false ->
-        let companyLocation = float job1.Geo.Lat, float job1.Geo.Lon
-        let distance = calcDistance (Some "profile.home") companyLocation
-        let map = new Dictionary<string, decimal>()
-        map.Add("profile id 1", decimal distance)
-        let newComp = 
-          new Local.Domain.CompaniesEntity(
-            Partition "Normal", Row job1.Company.Number,
-            DetailUrl = job1.Company.Url,
-            Latitude = (fst companyLocation |> Some),
-            Longitude = (snd companyLocation |> Some),
-            Name = job1.Company.Name,
-            Distances = (JsonConvert.SerializeObject(map) |> Some)
-          )
-        Companies.Insert(newComp) |> ignore
-        distance
-  |> ignore
+// Profiles.Get(Row "profile id 1", Partition "profile")
+// |> function
+// | None -> 0.
+// | Some profile -> 
+//   Companies.Get(Row job1.Company.Number, Partition "Normal")
+//   |> function
+//   | Some comp -> 
+//     let map = JsonConvert.DeserializeObject<Dictionary<string, decimal>>(comp.Distances |> Option.defaultValue("{}"))
+//     map.TryGetValue("profile id 1")
+//     |> function
+//     | true, v -> float v
+//     | false, _ -> 
+//       let distance, latitude, longitude =
+//         match comp.Latitude, comp.Longitude with
+//         | None,_ | _,None | Some 0., Some 0. ->
+//           let companyLocation = retrieveGeoFromPage (comp.DetailUrl)
+//           calcDistance profile.home companyLocation,
+//           fst companyLocation,
+//           snd companyLocation
+//         | Some lat, Some lon ->
+//           calcDistance profile.home (lat,lon),
+//           lat, lon
+//       map.Add("profile id 1", decimal distance)
+//       let updComp = 
+//         new Local.Domain.CompaniesEntity(
+//           Partition comp.PartitionKey, Row comp.RowKey,
+//           DetailUrl = comp.DetailUrl,
+//           Latitude = (Some latitude),
+//           Longitude = (Some longitude),
+//           Name = comp.Name,
+//           Distances = (JsonConvert.SerializeObject(map) |> Some)
+//         )
+//       Companies.Insert(updComp, TableInsertMode.Upsert) |> ignore
+//       distance
+//   | None -> 
+//     Companies.Get(Row job1.Company.Number, Partition "Special")
+//     |> function
+//     | Some comp -> 0.
+//     | None -> 
+//       let regx = new Regex("\/\/special\.", RegexOptions.IgnoreCase)
+//       regx.IsMatch(job1.Company.Url)
+//       |> function
+//       | true ->
+//         let newComp = 
+//           new Local.Domain.CompaniesEntity(
+//             Partition "Special", Row job1.Company.Number,
+//             DetailUrl = job1.Company.Url,
+//             Latitude = None,
+//             Longitude = None,
+//             Name = job1.Company.Name,
+//             Distances = None
+//           )
+//         Companies.Insert(newComp) |> ignore
+//         0.
+//       | false ->
+//         let companyLocation = float job1.Geo.Lat, float job1.Geo.Lon
+//         let distance = calcDistance (Some "profile.home") companyLocation
+//         let map = new Dictionary<string, decimal>()
+//         map.Add("profile id 1", decimal distance)
+//         let newComp = 
+//           new Local.Domain.CompaniesEntity(
+//             Partition "Normal", Row job1.Company.Number,
+//             DetailUrl = job1.Company.Url,
+//             Latitude = (fst companyLocation |> Some),
+//             Longitude = (snd companyLocation |> Some),
+//             Name = job1.Company.Name,
+//             Distances = (JsonConvert.SerializeObject(map) |> Some)
+//           )
+//         Companies.Insert(newComp) |> ignore
+//         distance
+//   |> ignore
 
 
 
