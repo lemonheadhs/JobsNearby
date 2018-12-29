@@ -10,6 +10,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{ACB1E5
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "JobsNearby.Api", "src\JobsNearby.Api\JobsNearby.Api.fsproj", "{91528197-F71C-4BE6-A579-18A45EA77811}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{B8CFB5F5-0D5C-4E62-B5C4-CEAAD7FBBC27}"
+	ProjectSection(SolutionItems) = preProject
+		build.fsx = build.fsx
+		script.fsx = script.fsx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{CAEA961C-F593-49D9-A402-24ACCF044E15}"
+	ProjectSection(SolutionItems) = preProject
+		samples\Companies.typed.csv = samples\Companies.typed.csv
+		samples\initState.json = samples\initState.json
+		samples\JobData.typed.csv = samples\JobData.typed.csv
+		samples\jobs.json = samples\jobs.json
+		samples\profiles.typed.csv = samples\profiles.typed.csv
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
