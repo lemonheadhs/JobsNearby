@@ -249,5 +249,21 @@ let calcDistance homeLoc compGeoInfo =
 //   |> ignore
 
 
+new Local.Domain.JobDataEntity(
+  Partition "profile name1|2018-12-23_01", Row job1.Number,
+  category = job1.Company.Type.Name,
+  color = chooseColor job1.Company.Type.Name,
+  companyName = job1.Company.Name,
+  distance = "12", // job1.Company.Number job1.Geo
+  link = job1.PositionUrl,
+  markerRadius = calcRadius job1.Company.Size.Name,
+  name = job1.JobName,
+  salaryEstimate = float (salaryEstimate(job1.Salary, job1.Company.Type.Name)),
+  scale = job1.Company.Size.Name
+)
+|> JsonConvert.SerializeObject
+|> JsonConvert.DeserializeObject<Local.Domain.JobDataEntity>
 
+let comp1 = Local.Tables.Companies.Get(Row "C001002003", Partition "Normal")
 
+comp1 |> Option.map(JsonConvert.SerializeObject >> printf "%s")

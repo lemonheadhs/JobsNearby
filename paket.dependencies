@@ -1,10 +1,12 @@
 source https://api.nuget.org/v3/index.json
-framework: >= net471
+framework: >= net472
 
+nuget FSharp.Collections.ParallelSeq
 nuget FSharp.Core
 nuget Suave
+nuget System.Configuration.ConfigurationManager
 nuget System.ValueTuple
-nuget FSharp.Azure.StorageTypeProvider
+nuget FSharp.Azure.StorageTypeProvider ~> 1.9
 nuget FSharp.Data
 nuget Newtonsoft.Json
 
@@ -15,6 +17,4 @@ group scripts
     nuget FSharp.Data
     nuget FSharp.Azure.StorageTypeProvider
     nuget Newtonsoft.Json
-
-
 

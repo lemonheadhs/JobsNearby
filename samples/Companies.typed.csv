@@ -1,2 +1,3 @@
-PartitionKey,RowKey,Timestamp,DetailUrl,DetailUrl@type,Latitude,Latitude@type,Longitude,Longitude@type
-Normal,C001002003,2018-12-23T08:44:19.887Z,http://www.baidu.com,Edm.String,36.00,Edm.String,23,Edm.Double
+PartitionKey,RowKey,Timestamp,DetailUrl,DetailUrl@type,Distances,Distances@type,Latitude,Latitude@type,Longitude,Longitude@type,Name,Name@type
+Normal,C001002003,2018-12-23T14:41:06.443Z,http://www.baidu.com,Edm.String,{'1': 31.0},Edm.String,36,Edm.Double,23,Edm.Double,test company,Edm.String
+Special,C001002007,2018-12-23T09:41:00.317Z,http://www.baidu.com,Edm.String,,,,,,,test company 2,Edm.String

@@ -1,8 +1,11 @@
-RESTRICTION: >= net471
+RESTRICTION: >= net472
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Azure.StorageTypeProvider (1.9.5)
       WindowsAzure.Storage (>= 7.2.1)
+    FSharp.Collections.ParallelSeq (1.1.2)
+      FSharp.Core (>= 4.0.0.1)
+      System.ValueTuple (>= 4.3.1)
     FSharp.Core (4.5.4)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.0.0.1)
@@ -10,6 +13,13 @@ NUGET
     Newtonsoft.Json (12.0.1)
     Suave (2.5.3)
       FSharp.Core (>= 4.0 < 5.0)
+    System.Configuration.ConfigurationManager (4.5)
+      System.Security.Permissions (>= 4.5)
+    System.Security.AccessControl (4.5)
+      System.Security.Principal.Windows (>= 4.5)
+    System.Security.Permissions (4.5)
+      System.Security.AccessControl (>= 4.5)
+    System.Security.Principal.Windows (4.5.1)
     System.ValueTuple (4.5)
     WindowsAzure.Storage (9.3.3)
       Microsoft.Azure.KeyVault.Core (>= 1.0)

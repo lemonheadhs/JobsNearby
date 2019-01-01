@@ -3,3 +3,5 @@ System.ValueTuple
 FSharp.Azure.StorageTypeProvider
 Suave
 FSharp.Data
+System.Configuration.ConfigurationManager
+FSharp.Collections.ParallelSeq

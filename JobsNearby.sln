@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{ACB1E5F6-C866-4908-B4C3-4DA5B5DDBE24}"
 	ProjectSection(SolutionItems) = preProject
 		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
 	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "JobsNearby.Api", "src\JobsNearby.Api\JobsNearby.Api.fsproj", "{91528197-F71C-4BE6-A579-18A45EA77811}"
@@ -23,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{CAEA
 		samples\JobData.typed.csv = samples\JobData.typed.csv
 		samples\jobs.json = samples\jobs.json
 		samples\profiles.typed.csv = samples\profiles.typed.csv
+		samples\routeSearchResp.json = samples\routeSearchResp.json
 	EndProjectSection
 EndProject
 Global
