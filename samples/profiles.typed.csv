@@ -1,3 +1,3 @@
-PartitionKey,RowKey,Timestamp,city,city@type,cityCode,cityCode@type,excludes,excludes@type,home,home@type,keyWords,keyWords@type,maxSalary,maxSalary@type,minSalary,minSalary@type,name,name@type,attempt,attempt@type,date,date@type,profileName,profileName@type
-profile,01,2018-12-23T14:42:37.197Z,长沙,Edm.String,749,Edm.String,java|php,Edm.String,"28,113",Edm.String,net|C#|F#,Edm.String,40000,Edm.Double,8000,Edm.Double,profile name 1,Edm.String,,,,,,
-searchAttempt,01|2018-21-23_01,2018-12-23T09:33:42.090Z,,,,,,,,,,,,,,,,,01,Edm.String,2018-12-23,Edm.String,profile name 1,Edm.String
+PartitionKey,RowKey,Timestamp,city,city@type,cityCode,cityCode@type,excludes,excludes@type,home,home@type,includes,includes@type,keyWords,keyWords@type,maxSalary,maxSalary@type,minSalary,minSalary@type,name,name@type,attempt,attempt@type
+profile,01,2019-01-03T08:37:37.307Z,长沙,Edm.String,749,Edm.String,java|php,Edm.String,"28.14124745679482,113.01404562311251",Edm.String,net|C#|F#,Edm.String,.net+c#,Edm.String,40000,Edm.Double,8000,Edm.Double,profile name 1,Edm.String,,
+searchAttempt,01|2018-21-23_01,2019-01-03T08:44:28.267Z,,,,,,,,,,,,,,,,,,,01,Edm.String
