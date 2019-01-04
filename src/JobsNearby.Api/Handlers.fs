@@ -26,7 +26,7 @@ module ExternalApiClient =
           "salary", "6000,15000"
         ] |> Map
 
-    let queryZhaopinAPI (profile: JobsNearby.Types.Azure.Domain.ProfilesEntity) pageIndex =            
+    let queryZhaopinAPI (profile: Azure.Domain.ProfilesEntity) pageIndex =            
         let apiEndpoint = "https://fe-api.zhaopin.com/c/i/sou"
         let query = 
             seq {

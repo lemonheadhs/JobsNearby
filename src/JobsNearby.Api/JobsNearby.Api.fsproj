@@ -51,6 +51,7 @@
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="paket.references" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
