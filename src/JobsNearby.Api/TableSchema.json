@@ -1,0 +1,93 @@
+{
+  "Companies": {
+    "Name": {
+      "Type": "String"
+    },
+    "DetailUrl": {
+      "Type": "String"
+    },
+    "Distances": {
+      "Type": "String",
+      "Optional": true
+    },
+    "Latitude": {
+      "Type": "double",
+      "Optional": true
+    },
+    "Longitude": {
+      "Type": "double",
+      "Optional": true
+    }
+  },
+  "Profiles": {
+    "name": {
+      "Type": "String",
+      "Optional": true
+    },
+    "city": {
+      "Type": "String",
+      "Optional": true
+    },
+    "cityCode": {
+      "Type": "String",
+      "Optional": true
+    },
+    "excludes": {
+      "Type": "String",
+      "Optional": true
+    },
+    "includes": {
+      "Type": "String",
+      "Optional": true
+    },
+    "home": {
+      "Type": "String",
+      "Optional": true
+    },
+    "keyWords": {
+      "Type": "String",
+      "Optional": true
+    },
+    "maxSalary": {
+      "Type": "double",
+      "Optional": true
+    },
+    "minSalary": {
+      "Type": "double",
+      "Optional": true
+    },
+    "attempt": {
+      "Type": "String",
+      "Optional": true
+    }
+  },
+  "JobData": {
+    "name": {
+      "Type": "String"
+    },
+    "color": {
+      "Type": "String"
+    },
+    "companyName": {
+      "Type": "String"
+    },
+    "distance": {
+      "Type": "String"
+    },
+    "link": {
+      "Type": "String"
+    },
+    "markerRadius": {
+      "Type": "int32"
+    },
+    "category": {
+      "Type": "String"
+    },
+    "salaryEstimate": {
+      "Type": "double"
+    },
+    "scale": {
+      "Type": "String"
+    }
+  }
+}

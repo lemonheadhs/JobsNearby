@@ -3,7 +3,7 @@
 open FSharp.Azure.StorageTypeProvider
 open FSharp.Data
 
-type Azure = AzureTypeProvider<configFileName = "web.config", connectionStringName = "azureStorage">
+type Azure = AzureTypeProvider<configFileName = "web.config", connectionStringName = "azureStorage", tableSchema = "TableSchema.json">
 
 // touch the tables so the compiler will try to generate types eagerly for them
 // related issue: https://github.com/fsprojects/AzureStorageTypeProvider/issues/66

@@ -79,7 +79,7 @@ module ExternalApiClient =
                 |> RouteInfo.AsyncLoad
             return (
                 match r.Status with
-                | 1 -> r.Result |> Seq.tryHead |> Option.map(fun o -> (float o.Distance.Value)/1000.) |> Option.defaultValue(0.)
+                | 0 -> r.Result |> Seq.tryHead |> Option.map(fun o -> (float o.Distance.Value)/1000.) |> Option.defaultValue(0.)
                 | _ -> 0.)
         }
 
@@ -329,7 +329,7 @@ module Handlers =
                     ()
                 | JobDataWork (profileId, searchAttemptId, jobDataId, jobDataDto, compPartition, compId, compDto) ->                 
                     let inline storeJobData distance (distanceMap: Dictionary<string, float>) updComp =
-                        distanceMap.Add(profileId, distance)
+                        distanceMap.[profileId] <- distance
                         Azure.Tables.JobData.InsertAsync(
                             Partition searchAttemptId, Row jobDataId,
                             {jobDataDto with
@@ -339,7 +339,8 @@ module Handlers =
                             Azure.Tables.Companies.InsertAsync (
                                 Partition "Normal", Row compId,
                                 {compDto with
-                                    Distances = JsonConvert.SerializeObject(distanceMap) }
+                                    Distances = JsonConvert.SerializeObject(distanceMap) },
+                                insertMode = TableInsertMode.Upsert
                             ) |> Async.map(ignore) |> Async.Start
                 
                     match! (profileId, compId) |> getProfileAndCompAsync with
