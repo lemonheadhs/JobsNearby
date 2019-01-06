@@ -1,0 +1,13 @@
+{
+  "status": 0,
+  "result": {
+    "location": {
+      "lng": 114.12,
+      "lat": 25.12
+    },
+    "precise": 1,
+    "confidence": 80,
+    "comprehension": 100,
+    "level": "µÀÂ·"
+  }
+}

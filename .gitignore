@@ -15,6 +15,7 @@ samples/*
 !samples/Companies.typed.csv
 !samples/JobData.typed.csv
 !samples/profiles.typed.csv
+!samples/geoCodeSearchResp.json
 src/JobsNearby.Api/App.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)

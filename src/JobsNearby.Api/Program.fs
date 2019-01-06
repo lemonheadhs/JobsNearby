@@ -7,6 +7,7 @@ open Suave.Operators
 open Suave.Filters
 open Suave.Successful
 open JobsNearby.Handlers
+open Suave.RequestErrors
 
 
 let app =
@@ -20,6 +21,14 @@ let app =
         POST >=>
             choose [
                 pathScan "/api/crawling/%s" crawling
+                path "/api/company/geo" >=> 
+                    request (fun req -> 
+                                match (req.formData "compId", req.formData "addr") with
+                                | (Choice1Of2 compId), (Choice1Of2 addr) ->
+                                    searchAndUpdateCompGeo (compId, addr)
+                                | Choice2Of2 err, _ -> BAD_REQUEST err
+                                | _, Choice2Of2 err -> BAD_REQUEST err)
+                pathScan "/api/company/doubt/p/%s" companyDoubt
                 path "/worker/start" >=> workOnBacklog
             ]
     ]

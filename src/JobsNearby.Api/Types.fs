@@ -16,6 +16,8 @@ type JobsResults = FSharp.Data.JsonProvider<"../../samples/jobs.json">
 
 type RouteInfo = JsonProvider<"../../samples/routeSearchResp.json">
 
+type GeoCodeInfo = JsonProvider<"../../samples/geoCodeSearchResp.json">
+
 
 [<CLIMutable>]
 type JobDataDto =

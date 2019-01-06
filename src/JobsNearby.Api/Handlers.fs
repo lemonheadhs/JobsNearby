@@ -83,6 +83,17 @@ module ExternalApiClient =
                 | _ -> 0.)
         }
 
+    let searchGeoCode (addr: string) =
+        let ak = ConfigurationManager.AppSettings.["baidu_map_app_key"]
+        let url = sprintf "http://api.map.baidu.com/geocoder/v2/?address=%s&output=json&ak=%s" addr ak
+        async {
+            let! r = url |> GeoCodeInfo.AsyncLoad
+            return (
+                match r.Status with
+                | 0 -> Some (r.Result.Location.Lat, r.Result.Location.Lng)
+                | _ -> None)
+        }
+
 module InnerFuncs =
 
     let inline salaryEstimate (salaryTxt: string, category: string) =
@@ -143,13 +154,13 @@ module InnerFuncs =
                 let compId = job.Company.Number
                 let compPartition = 
                     match job.Geo.Lat, job.Geo.Lon with
-                    | 0m, 0m -> "Special"
+                    | None, _ | _, None | Some 0m, Some 0m | Some -1m, Some -1m -> "Special"
                     | _ -> "Normal"
                 let compDto = {
                     Name = job.Company.Name
                     DetailUrl = job.Company.Url
-                    Latitude = float job.Geo.Lat
-                    Longitude = float job.Geo.Lon
+                    Latitude = job.Geo.Lat |> Option.defaultValue(0m) |> float
+                    Longitude = job.Geo.Lon |> Option.defaultValue(0m) |> float
                     Distances = "{}"
                 }
                 (sprintf "JobData##%s|%s|%s|%s|%s|%s"
@@ -298,6 +309,7 @@ module Handlers =
     open System.Collections.Generic
     open InnerFuncs
     open ExternalApiClient
+    open Suave.RequestErrors
 
     let getAllProfiles ctx =
         async {
@@ -328,7 +340,7 @@ module Handlers =
                         awakenWorkers()
                     ()
                 | JobDataWork (profileId, searchAttemptId, jobDataId, jobDataDto, compPartition, compId, compDto) ->                 
-                    let inline storeJobData distance (distanceMap: Dictionary<string, float>) updComp =
+                    let inline storeJobData distance (distanceMap: Dictionary<string, float>) updComp (compOpt: Azure.Domain.CompaniesEntity option) =
                         distanceMap.[profileId] <- distance
                         Azure.Tables.JobData.InsertAsync(
                             Partition searchAttemptId, Row jobDataId,
@@ -339,7 +351,13 @@ module Handlers =
                             Azure.Tables.Companies.InsertAsync (
                                 Partition "Normal", Row compId,
                                 {compDto with
-                                    Distances = JsonConvert.SerializeObject(distanceMap) },
+                                    Distances = JsonConvert.SerializeObject(distanceMap)
+                                    Latitude = compOpt |> function
+                                                       | None -> compDto.Latitude
+                                                       | Some comp -> comp.Latitude |> Option.defaultValue(compDto.Latitude)
+                                    Longitude = compOpt |> function
+                                                        | None -> compDto.Longitude
+                                                        | Some comp -> comp.Longitude |> Option.defaultValue(compDto.Longitude)},
                                 insertMode = TableInsertMode.Upsert
                             ) |> Async.map(ignore) |> Async.Start
                 
@@ -349,7 +367,7 @@ module Handlers =
                         if compPartition = "Normal" then
                             let map = new Dictionary<string, float>()
                             let! distance = calcDistance profile.home (compDto.Latitude, compDto.Longitude)
-                            storeJobData distance map true
+                            storeJobData distance map true None
                             Azure.Queues.test.DeleteMessage deqMsg.Id |> Async.Start
                         else
                             Azure.Tables.Companies.InsertAsync(
@@ -380,11 +398,62 @@ module Handlers =
                                     return (true, d)
                                 }
 
-                        storeJobData distance map updComp
+                        storeJobData distance map updComp (Some comp)
                         Azure.Queues.test.DeleteMessage deqMsg.Id |> Async.Start
                     awakenWorkers()
                 | _ -> ()
             return! ACCEPTED "worker is processing" ctx
+        }
+
+    let searchAndUpdateCompGeo (compId, compAddr) ctx =
+        async {
+            match! Azure.Tables.Companies.GetAsync(Row compId, Partition "Special") with
+            | None -> return! (BAD_REQUEST "no such company" ctx)
+            | Some comp ->
+                match! searchGeoCode compAddr with
+                | None -> return! (OK "geo code not found" ctx)
+                | Some (lat, lon) ->
+                    Azure.Tables.Companies.InsertAsync(
+                        new Azure.Domain.CompaniesEntity(
+                            Partition "Normal",
+                            Row comp.RowKey,
+                            Name = comp.Name,
+                            DetailUrl = comp.DetailUrl,
+                            Distances = Some "{}",
+                            Latitude = Some (float lat),
+                            Longitude = Some (float lon)
+                        ), TableInsertMode.Upsert) 
+                    |> Async.map(ignore) |> Async.Start
+                    Azure.Tables.Companies.DeleteAsync(comp)
+                    |> Async.map(ignore) |> Async.Start
+                    return! (OK "company geo code updated" ctx)
+        }
+
+    let companyDoubt (profileId: string) ctx =
+        async {
+            let! all = Azure.Tables.Companies.GetPartitionAsync("Normal")
+            all
+            |> Seq.filter(fun (c: Azure.Domain.CompaniesEntity) ->
+                                c.Distances
+                                |> Option.bind(fun ds -> 
+                                                let map = JsonConvert.DeserializeObject<Dictionary<string, float>>(ds)
+                                                map.TryGetValue(profileId)
+                                                |> function
+                                                | (true, d) -> Some (d > 50.)
+                                                | (false, _) -> Some false)
+                                |> Option.defaultValue(true))
+            |> Seq.iter(fun c ->
+                            Azure.Tables.Companies.InsertAsync(
+                                new Azure.Domain.CompaniesEntity(
+                                    Partition "Special", Row c.RowKey,
+                                    Name = c.Name,
+                                    DetailUrl = c.DetailUrl,
+                                    Latitude = None,
+                                    Longitude = None,
+                                    Distances = None)
+                                )
+                            |> Async.map(ignore) |> Async.Start) 
+            return! OK "completed" ctx
         }
 
     let test compId ctx =

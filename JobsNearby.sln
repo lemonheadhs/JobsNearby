@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{CAEA961C-F593-49D9-A402-24ACCF044E15}"
 	ProjectSection(SolutionItems) = preProject
 		samples\Companies.typed.csv = samples\Companies.typed.csv
+		samples\geoCodeSearchResp.json = samples\geoCodeSearchResp.json
 		samples\initState.json = samples\initState.json
 		samples\JobData.typed.csv = samples\JobData.typed.csv
 		samples\jobs.json = samples\jobs.json
