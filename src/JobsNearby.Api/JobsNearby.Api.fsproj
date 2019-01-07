@@ -53,6 +53,9 @@
     <Content Include="paket.references" />
     <Content Include="web.config" />
     <None Include="TableSchema.json" />
+    <None Include="Public\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

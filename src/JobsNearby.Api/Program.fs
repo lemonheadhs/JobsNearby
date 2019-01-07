@@ -1,6 +1,7 @@
 ﻿module JobsNearby.App
 
 open System
+open System.IO
 open Suave
 open System.Threading
 open Suave.Operators
@@ -8,15 +9,25 @@ open Suave.Filters
 open Suave.Successful
 open JobsNearby.Handlers
 open Suave.RequestErrors
+open System
 
 
 let app =
     choose [
         GET >=> 
             choose [
-                path "/" >=> OK "Hello world"
+                path "/" >=> Files.browseFileHome "index.html"
+                Files.browseHome
                 path "/api/profiles" >=> getAllProfiles
+                pathScan "/api/profiles/%i/datasets" getAllDataSets
+                path "/api/jobdata" >=> 
+                    request (fun req -> 
+                                match req.["dataSetId"] with
+                                | Some id ->
+                                    getJobData id
+                                | None -> OK "[]")
                 pathScan "/test/%s" test
+                RequestErrors.NOT_FOUND "Page not found."
             ]
         POST >=>
             choose [
@@ -38,7 +49,13 @@ let app =
 [<EntryPoint>]
 let main argv = 
     let cts = new CancellationTokenSource()
-    let conf =  { defaultConfig with cancellationToken = cts.Token }
+    let webContentPath = 
+        Path.Combine(Environment.CurrentDirectory, "Public")
+    Console.WriteLine(webContentPath)
+    let conf = 
+        { defaultConfig with 
+            cancellationToken = cts.Token 
+            homeFolder = Some webContentPath }
     let listening, server = startWebServerAsync conf app
 
     Async.Start(server, cts.Token)

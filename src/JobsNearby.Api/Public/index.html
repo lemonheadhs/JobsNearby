@@ -1,0 +1,187 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Lemonhead JobsNearby</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/ramda@0.25/dist/ramda.min.js"></script>
+</head>
+<body>
+    <h1>Hello world!</h1>
+    <div class="main" id="app">
+        <div>
+            <div>
+                <label>Profile:</label>
+                <select name="profiles" v-model="theProfile">
+                    <option v-for="p in profiles" v-bind:value="p">{{p.Name}}</option>
+                </select>
+            </div>
+            <div>
+                <label>Data Set:</label>
+                <select name="dataSets" v-model="theDataSet">
+                    <option v-for="s in dataSets" v-bind:value="s">{{s}}</option>
+                </select>
+            </div>
+            <div>
+                <button @click="startCrawling(theProfile.Id)">Crawl a New Data Set</button>
+            </div>
+        </div>
+        <div id="chart-container" class="chart-container"></div>
+    </div>
+    <script>
+
+        async function getAllProfiles(vm) {
+            var profilesResp = await axios.get('/api/profiles')
+            vm.profiles = profilesResp.data
+            vm.theProfile = profilesResp.data[0]
+
+            tryUpdateDataSets(vm)
+        }
+
+        async function tryUpdateDataSets(vm) {
+            if (!vm.theProfile) { return }
+            var theProfile = vm.theProfile
+            var dataSetsResp = await axios.get(`/api/profiles/${theProfile.Id}/datasets`)
+            vm.dataSets = dataSetsResp.data
+            vm.theDataSet = dataSetsResp.data[0]
+
+            tryUpdateChartData(vm)
+        }
+
+        async function tryUpdateChartData(vm) {
+            if (!vm.theDataSet) { return }
+            var theDataSet = vm.theDataSet
+            var chartDataResp = await axios.get('/api/jobdata', { params: { dataSetId: theDataSet } })
+            vm.chartData =
+                R.pipe(
+                    R.reduce((acc, point) => {
+                        var arr = acc[point.category] || []
+                        point.marker = {
+                            radius: point.markerRadius
+                        }
+                        point.x = point.salaryEstimate
+                        point.y = parseFloat(point.distance)
+                        if (point.y <= 50.) {
+                            arr.push(point)
+                            acc[point.category] = arr
+                        }
+                        return acc
+                    }, {}),
+                    R.toPairs,
+                    R.map(pair => {
+                        var [name, data] = pair
+                        var color = R.path(['0', 'color'], data) || 'black'
+                        return { name, color, data }
+                    })
+                )(chartDataResp.data || [])
+
+            myChart.update({
+                series: vm.chartData
+            }, true, true, false)
+        }
+
+        async function startCrawlingNewDataSet(profileId) {
+            axios.post(`/api/crawling/${profileId}`)
+        }
+
+        var myApp = new Vue({
+            el: '#app',
+            data: {
+                profiles: [],
+                dataSets: [],
+                theProfile: null,
+                theDataSet: null,
+                chartData: []
+            },
+            watch: {
+                theProfile: function (val, oldVal) {
+                    if (val !== oldVal) {
+                        tryUpdateDataSets(this)
+                    }
+                },
+                theDataSet: function (val, oldVal) {
+                    if (val !== oldVal) {
+                        tryUpdateChartData(this)
+                    }
+                }
+            },
+            methods: {
+                startCrawling: function (profileId) {
+                    if (!profileId) return
+                    startCrawlingNewDataSet(profileId)
+                }
+            },
+            mounted: function () {
+                getAllProfiles(this)
+            }
+        })
+
+        var myChart = Highcharts.chart({
+            chart: {
+                renderTo: 'chart-container',
+                type: 'scatter'
+            },
+            title: {
+                text: 'Positions Scatter Chart'
+            },
+            xAxis: {
+                title: {
+                    text: 'Monthly Salary',
+                    enabled: true
+                },
+                plotLines: [
+                    {
+                        color: 'purple',
+                        width: 1,
+                        value: 8.0
+                    },
+                    {
+                        color: 'purple',
+                        width: 1,
+                        value: 14.0
+                    },
+                ]
+            },
+            yAxis: {
+                title: {
+                    text: 'Distance from Home'
+                },
+                plotLines: [
+                    {
+                        color: 'purple',
+                        width: 1,
+                        value: 12.0
+                    },
+                ]
+            },
+            plotOptions: {
+                scatter: {
+                    cursor: "pointer",
+                    events: {
+                        click: function (e) {
+                            var link = R.path(['point', 'link'], e)
+                            window.open(link, "_blank")
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    let point = this
+                    return `<b>${point.key}</b><br>${point.point.companyName}<br>salary: <b>${point.x}</b> k-yuan/m<br>distance: <b>${point.y}</b> km`
+                }
+            },
+            series: []
+        })
+
+    </script>
+    <style>
+        .main {
+            width: 100%;
+            padding: 15px 30px 15px;
+            background-color: #eeeeee;
+        }
+    </style>
+</body>
+</html>

@@ -39,3 +39,8 @@ type CompanyDto =
       Name: string
       Distances: string
     }
+[<CLIMutable>]
+type ProfileVm =
+    { Name: string
+      Id: string
+    }
