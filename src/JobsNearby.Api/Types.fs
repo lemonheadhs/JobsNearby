@@ -43,4 +43,6 @@ type CompanyDto =
 type ProfileVm =
     { Name: string
       Id: string
+      MinSalary: float
+      MaxSalary: float
     }

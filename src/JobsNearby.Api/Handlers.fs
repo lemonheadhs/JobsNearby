@@ -321,7 +321,12 @@ module Handlers =
             let! profiles = Azure.Tables.Profiles.GetPartitionAsync("profile")
             let payload = 
                 profiles 
-                |> Seq.map(fun p -> { Id = p.RowKey; Name = p.name |> Option.defaultValue("undefined") } )
+                |> Seq.map(fun p -> 
+                            { Id = p.RowKey
+                              Name = p.name |> Option.defaultValue("undefined") 
+                              MinSalary = p.minSalary |> Option.defaultValue(0.)
+                              MaxSalary = p.maxSalary |> Option.defaultValue(0.)
+                            } )
             return! ctx |> (JSON payload)        
         }
 

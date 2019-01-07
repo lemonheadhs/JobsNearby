@@ -51,7 +51,16 @@
 
         async function tryUpdateChartData(vm) {
             if (!vm.theDataSet) { return }
+            var theProfile = vm.theProfile
             var theDataSet = vm.theDataSet
+            var low = 0.66 * theProfile.MinSalary / 1000.,
+                up = (theProfile.MaxSalary + (theProfile.MaxSalary - theProfile.MinSalary) * 0.33) / 1000.
+            var interestingData = 
+                point => 
+                    point.y <= 30.
+                    && point.x > low
+                    && point.x < up            
+
             var chartDataResp = await axios.get('/api/jobdata', { params: { dataSetId: theDataSet } })
             vm.chartData =
                 R.pipe(
@@ -62,7 +71,7 @@
                         }
                         point.x = point.salaryEstimate
                         point.y = parseFloat(point.distance)
-                        if (point.y <= 50.) {
+                        if (interestingData(point)) {
                             arr.push(point)
                             acc[point.category] = arr
                         }
