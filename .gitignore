@@ -17,6 +17,7 @@ samples/*
 !samples/profiles.typed.csv
 !samples/geoCodeSearchResp.json
 src/JobsNearby.Api/App.config
+zipTemp/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

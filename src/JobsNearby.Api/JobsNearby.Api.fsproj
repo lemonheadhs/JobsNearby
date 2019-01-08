@@ -51,7 +51,9 @@
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="paket.references" />
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="TableSchema.json" />
     <None Include="Public\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
