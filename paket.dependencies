@@ -18,3 +18,8 @@ group scripts
     nuget FSharp.Azure.StorageTypeProvider
     nuget Newtonsoft.Json
 
+group azureRes
+    source https://nuget.org/api/v2
+    framework: net472
+
+    nuget Microsoft.Azure.Management.Fluent

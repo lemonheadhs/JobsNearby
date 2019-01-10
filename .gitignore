@@ -18,6 +18,7 @@ samples/*
 !samples/geoCodeSearchResp.json
 src/JobsNearby.Api/App.config
 zipTemp/
+my.azureauth
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
