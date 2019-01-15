@@ -53,8 +53,18 @@ let appName =
     | s when String.IsNullOrEmpty(s) -> "JobsNearby"
     | s -> s
 
+let workerInstCount = 3
+
+let deployedSites =
+    [ 0..(workerInstCount - 1) ]
+    |> List.map (sprintf "JNBWorker%i")
+    |> fun ls -> appName :: ls
+    |> List.map (sprintf "https://%s.chinacloudsites.cn")
+    |> String.concat ","
+
 let applicationId = promptForValue "AD App ID"
 let tenantId = promptForValue "Tenant ID"
+let baiduMapApiKey = promptForValue "Baidu Map API Key"
 
 let app1 =
     let appPlan =
@@ -64,7 +74,9 @@ let app1 =
              .Create()
     azure.WebApps.Define(appName).WithExistingWindowsPlan(appPlan)
          .WithExistingResourceGroup(resourceGroup)
-         .WithAppSetting("IsJNBWorker", "false").Create()
+         .WithAppSetting("IsJNBWorker", "false")
+         .WithAppSetting("baidu_map_app_key", baiduMapApiKey)
+         .WithAppSetting("deployed_sites", deployedSites).Create()
 
 app1.Update().DefineAuthentication()
     .WithDefaultAuthenticationProvider(BuiltInAuthenticationProvider.AzureActiveDirectory)
@@ -72,7 +84,6 @@ app1.Update().DefineAuthentication()
     .Attach().Apply()
 
 let regions = [| Region.ChinaEast; Region.ChinaNorth |]
-let workerInstCount = 3
 
 let workers =
     [ 0..(workerInstCount - 1) ]
@@ -87,7 +98,9 @@ let workers =
            azure.WebApps.Define(sprintf "JNBWorker%i" i)
                 .WithExistingWindowsPlan(appPlan)
                 .WithExistingResourceGroup(resourceGroup)
-                .WithAppSetting("IsJNBWorker", "true").Create())
+                .WithAppSetting("IsJNBWorker", "true")
+                .WithAppSetting("baidu_map_app_key", baiduMapApiKey)
+                .WithAppSetting("deployed_sites", deployedSites).Create())
 
 let storePubProfiles() =
     use sw = new System.IO.StreamWriter("./samples/PubProfiles.json")
@@ -100,3 +113,14 @@ let storePubProfiles() =
     sw.Write(lstJsonStr)
 
 storePubProfiles()
+(*
+azure.WebApps.ListByResourceGroup("JobsInfoGagher")
+|> Seq.iter
+       (fun app ->
+       app.Update().WithAppSetting("baidu_map_app_key", baiduMapApiKey)
+          .WithAppSetting("deployed_sites", deployedSites).Apply() |> ignore)
+azure.WebApps.ListByResourceGroup("JobsInfoGagher")
+|> Seq.map (fun app -> app.OutboundIPAddresses |> Set)
+|> Seq.reduce (Set.union)
+|> String.concat ","
+*)

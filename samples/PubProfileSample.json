@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "app name",
+        "FtpUrl": "ftp.chinacloudsites.chinacloudapi.cn/site/wwwroot",
+        "FtpUsername": "ftpun",
+        "FtpPassword": "ftppwd",
+        "GitUrl": "app.scm.chinacloudsites.cn:443",
+        "GitUsername": "gitun",
+        "GitPassword": "gitpwd"
+    }
+]
