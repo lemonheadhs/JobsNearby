@@ -1,0 +1,6 @@
+group giraffeApi
+  Microsoft.AspNetCore.App
+  Giraffe
+  FSharp.Azure.StorageTypeProvider
+  FSharp.Data
+  Newtonsoft.Json
