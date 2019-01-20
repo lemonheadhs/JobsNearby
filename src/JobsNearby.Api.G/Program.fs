@@ -1,6 +1,7 @@
 module JobsNearby.Api.G.App
 
 open System
+open System.IO
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -11,6 +12,7 @@ open Giraffe.HttpStatusCodeHandlers.Successful
 open Giraffe.HttpStatusCodeHandlers.RequestErrors
 open Giraffe.ModelBinding
 open JobsNearby.Api.G.HttpHandlers
+open Microsoft.Extensions.Configuration
 
 // ---------------------------------
 // Web app
@@ -47,6 +49,16 @@ let errorHandler (ex : Exception) (logger : ILogger) =
 // Config and Main
 // ---------------------------------
 
+let configureAppConfig (ctx: WebHostBuilderContext) (config: IConfigurationBuilder) =
+    let environment = ctx.HostingEnvironment.EnvironmentName
+    config
+        .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional = true)
+        .AddJsonFile(sprintf "appsettings.%s.json" environment, optional = true)
+        .AddEnvironmentVariables()
+    |> ignore
+
+
 let configureCors (builder : CorsPolicyBuilder) =
     builder.WithOrigins("http://localhost:8080")
            .AllowAnyMethod()
@@ -60,6 +72,7 @@ let configureApp (app : IApplicationBuilder) =
     | false -> app.UseGiraffeErrorHandler errorHandler)
         .UseHttpsRedirection()
         .UseCors(configureCors)
+        .UseStaticFiles()
         .UseGiraffe(webApp)
 
 let configureServices (services : IServiceCollection) =
@@ -71,11 +84,17 @@ let configureLogging (builder : ILoggingBuilder) =
            .AddConsole()
            .AddDebug() |> ignore
 
+let contentRoot = Directory.GetCurrentDirectory()
+let webRoot = Path.Combine(contentRoot, "Public")
+
 [<EntryPoint>]
 let main _ =
     WebHostBuilder()
         .UseKestrel()
+        .UseContentRoot(contentRoot)
         .UseIISIntegration()
+        .UseWebRoot(webRoot)
+        .ConfigureAppConfiguration(configureAppConfig)
         .Configure(Action<IApplicationBuilder> configureApp)
         .ConfigureServices(configureServices)
         .ConfigureLogging(configureLogging)
