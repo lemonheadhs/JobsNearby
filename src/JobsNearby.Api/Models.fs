@@ -1,4 +1,4 @@
-module JobsNearby.Api.G.Models
+module JobsNearby.Api.Models
 
 open FSharp.Azure.StorageTypeProvider
 open FSharp.Data

@@ -1,7 +1,7 @@
-namespace JobsNearby.Api.G
+namespace JobsNearby.Api
 
 open FSharp.Data
-open JobsNearby.Api.G.Models
+open JobsNearby.Api.Models
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Configuration
 

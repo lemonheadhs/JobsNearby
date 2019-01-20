@@ -1,7 +1,5 @@
-FSharp.Core
-System.ValueTuple
+Microsoft.AspNetCore.App
+Giraffe
 FSharp.Azure.StorageTypeProvider
-Suave
 FSharp.Data
-System.Configuration.ConfigurationManager
-FSharp.Collections.ParallelSeq
+Newtonsoft.Json

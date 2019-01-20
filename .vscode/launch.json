@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/JobsNearby.Api/bin/Debug/netcoreapp2.1/JobsNearby.Api.dll",
+            "program": "${workspaceFolder}/src/JobsNearby.Api/bin/Debug/netcoreapp2.2/JobsNearby.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/JobsNearby.Api/",
             "console": "internalConsole",
