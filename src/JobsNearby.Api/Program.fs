@@ -13,6 +13,8 @@ open Giraffe.HttpStatusCodeHandlers.RequestErrors
 open Giraffe.ModelBinding
 open JobsNearby.Api.HttpHandlers
 open Microsoft.Extensions.Configuration
+open Serilog
+open Giraffe.SerilogExtensions
 
 // ---------------------------------
 // Web app
@@ -38,13 +40,13 @@ let webApp =
         POST >=> route "/worker/start" >=> workOnBacklog
         setStatusCode 404 >=> text "Not Found" ]
 
-// ---------------------------------
-// Error handler
-// ---------------------------------
+let serilogConfig =
+    { SerilogConfig.defaults with
+        ErrorHandler = 
+            fun ex httpContext ->
+                clearResponse >=> setStatusCode 500 >=> text ex.Message}
 
-let errorHandler (ex : Exception) (logger : ILogger) =
-    logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
-    clearResponse >=> setStatusCode 500 >=> text ex.Message
+let webAppWithLogging = SerilogAdapter.Enable(webApp, serilogConfig)
 
 // ---------------------------------
 // Config and Main
@@ -70,20 +72,22 @@ let configureApp (app : IApplicationBuilder) =
     let env = app.ApplicationServices.GetService<IHostingEnvironment>()
     (match env.IsDevelopment() with
     | true  -> app.UseDeveloperExceptionPage()
-    | false -> app.UseGiraffeErrorHandler errorHandler)
+    | false -> app)
         .UseHttpsRedirection()
         .UseCors(configureCors)
         .UseStaticFiles()
-        .UseGiraffe(webApp)
+        .UseGiraffe(webAppWithLogging)
 
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
 
-let configureLogging (builder : ILoggingBuilder) =
-    builder.AddFilter(fun l -> l.Equals LogLevel.Error)
-           .AddConsole()
-           .AddDebug() |> ignore
+let serilogInit (hostCtx: WebHostBuilderContext) (loggerConfig: LoggerConfiguration) = 
+    loggerConfig
+        .ReadFrom.Configuration(hostCtx.Configuration)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+    |> ignore
 
 let contentRoot = Directory.GetCurrentDirectory()
 let webRoot = Path.Combine(contentRoot, "Public")
@@ -95,10 +99,10 @@ let main _ =
         .UseContentRoot(contentRoot)
         .UseIISIntegration()
         .UseWebRoot(webRoot)
+        .UseSerilog(serilogInit)
         .ConfigureAppConfiguration(configureAppConfig)
         .Configure(Action<IApplicationBuilder> configureApp)
         .ConfigureServices(configureServices)
-        .ConfigureLogging(configureLogging)
         .Build()
         .Run()
     0

@@ -318,6 +318,7 @@ module HttpHandlers =
     open Giraffe.HttpStatusCodeHandlers.Successful
     open Giraffe.HttpStatusCodeHandlers.RequestErrors
     open Giraffe.HttpStatusCodeHandlers.ServerErrors
+    open Giraffe.SerilogExtensions
 
     open ExternalApiClient
     open InnerFuncs
@@ -325,6 +326,8 @@ module HttpHandlers =
     let accessDenied = setStatusCode 401 >=> text "Access Denied"
 
     let simpleAuthn (next: HttpFunc) (ctx: HttpContext) =
+        let logger = ctx.Logger()
+        logger.Information("hello, from test log")
         let settings = ctx.GetService<IConfiguration>()
         let isDevEnv = lazy (settings.["ASPNETCORE_ENVIRONMENT"] = "Development")
         let isWorker = lazy (settings.["IsJNBWorker"] = "true")

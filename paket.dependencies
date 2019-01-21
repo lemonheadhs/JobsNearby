@@ -10,6 +10,10 @@ nuget xunit.runner.visualstudio
 nuget FSharp.Azure.StorageTypeProvider
 nuget FSharp.Data
 nuget Newtonsoft.Json
+nuget Serilog.AspNetCore
+nuget Serilog.Sinks.Console
+nuget Serilog.Settings.Configuration
+nuget Giraffe.SerilogExtensions
 
 group scripts
     source https://www.nuget.org/api/v2

@@ -3,3 +3,7 @@ Giraffe
 FSharp.Azure.StorageTypeProvider
 FSharp.Data
 Newtonsoft.Json
+Serilog.AspNetCore
+Serilog.Sinks.Console
+Serilog.Settings.Configuration
+Giraffe.SerilogExtensions
