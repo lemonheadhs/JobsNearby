@@ -1,4 +1,4 @@
-module JobsNearby.Api.App
+﻿module JobsNearby.Api.App
 
 open System
 open System.IO
@@ -20,8 +20,9 @@ open Microsoft.Extensions.Configuration
 
 let webApp =
     choose [
+        GET >=> route "/" >=> simpleAuthn >=> htmlFile "Public/index.html"
         subRoute "/api"
-            (choose [
+            (simpleAuthn >=> choose [
                 GET >=> choose [
                     route "/profiles" >=> getAllProfiles
                     routef "/profiles/%i/datasets" getAllDataSets

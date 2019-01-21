@@ -91,6 +91,7 @@ open System.Text.RegularExpressions
 open Newtonsoft.Json
 open FSharp.Control.Tasks
 open Giraffe
+open System
 
 module InnerFuncs =
     let AsFst snd fst = fst, snd
@@ -320,6 +321,18 @@ module HttpHandlers =
 
     open ExternalApiClient
     open InnerFuncs
+
+    let accessDenied = setStatusCode 401 >=> text "Access Denied"
+
+    let simpleAuthn (next: HttpFunc) (ctx: HttpContext) =
+        let settings = ctx.GetService<IConfiguration>()
+        let isDevEnv = lazy (settings.["ASPNETCORE_ENVIRONMENT"] = "Development")
+        let isWorker = lazy (settings.["IsJNBWorker"] = "true")
+        match isDevEnv, isWorker with
+        | Lazy true, _ -> next
+        | _, Lazy true -> accessDenied next
+        | _ -> requiresAuthentication accessDenied next
+        <| ctx
 
     let getAllProfiles next (ctx: HttpContext) =
         let settings = ctx.GetService<IConfiguration>()
