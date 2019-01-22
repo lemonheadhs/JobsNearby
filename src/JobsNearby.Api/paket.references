@@ -7,3 +7,4 @@ Serilog.AspNetCore
 Serilog.Sinks.Console
 Serilog.Settings.Configuration
 Giraffe.SerilogExtensions
+Giraffe.GoodRead

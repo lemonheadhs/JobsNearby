@@ -18,6 +18,7 @@ samples/*
 !samples/geoCodeSearchResp.json
 !samples/PubProfileSample.json
 src/JobsNearby.Api/App.config
+src/JobsNearby.Api/appsettings.Development.json
 zipTemp/
 my.azureauth
 

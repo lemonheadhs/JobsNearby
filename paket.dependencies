@@ -1,6 +1,7 @@
 storage: none
 source https://api.nuget.org/v3/index.json
 
+nuget Giraffe.GoodRead
 nuget Microsoft.AspNetCore.App
 nuget Giraffe
 nuget Microsoft.NET.Test.Sdk

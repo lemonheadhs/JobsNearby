@@ -1,9 +1,12 @@
 namespace JobsNearby.Api
 
+open System
 open FSharp.Data
 open JobsNearby.Api.Models
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Configuration
+open Microsoft.Extensions.Options
+open FSharp.Azure.StorageTypeProvider.Table
 
 module ExternalApiClient =
 
@@ -51,7 +54,6 @@ module ExternalApiClient =
         }
         
     open Microsoft.FSharp.Core.Printf
-    open System.Configuration
 
     let mapRouteUrl ak origin (destinations: (float*float) seq) = 
         let fmt: StringFormat<(string -> string -> string -> string)> = 
@@ -86,12 +88,155 @@ module ExternalApiClient =
                 | _ -> None)
         }
 
-open System
+
+module Services =
+    open ExternalApiClient
+    open Microsoft.Extensions.DependencyInjection
+
+    type IGeoService = 
+        abstract member searchGeoCode: addr:string -> Async<(decimal*decimal) option>
+        abstract member calcDistance: homeLoc:string option -> compGeoInfo: (float*float) -> Async<float>
+
+    let GeoServiceProvider = 
+        new Func<IServiceProvider, IGeoService>( fun (sp: IServiceProvider) ->
+            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAccessor.CurrentValue
+            { new IGeoService with
+                member this.searchGeoCode addr = searchGeoCode appSetting.BaiduMapAppKey addr
+                member this.calcDistance homeLoc compGeoInfo = calcDistance appSetting.BaiduMapAppKey homeLoc compGeoInfo })
+        
+    type CompEntity = Azure.Domain.CompaniesEntity
+    type CompType =
+        | Normal
+        | Special
+        with member this.Name =
+                match this with
+                | Normal -> "Normal"
+                | Special -> "Special"
+
+    type ICompStore =
+        abstract member getNormal: compId:string -> Async<CompEntity option>
+        abstract member getSpecial: compId:string -> Async<CompEntity option>
+        abstract member getAllComp: compType:CompType -> Async<CompEntity []>
+        abstract member insert: entity:CompEntity * mode:TableInsertMode -> Async<TableResponse>
+        abstract member insert: compType:CompType * compId:string * props:Object * mode:TableInsertMode -> Async<TableResponse>
+        abstract member delete: entity:CompEntity -> Async<TableResponse>
+
+    let CompStoreProvider =
+        new Func<IServiceProvider, ICompStore>(fun sp ->
+            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAccessor.CurrentValue
+            let connStr = appSetting.StorageConnStr
+            { new ICompStore with
+                member this.getNormal compId =
+                    Azure.Tables.Companies.GetAsync(Row compId, Partition "Normal", connStr)
+                member this.getSpecial compId =
+                    Azure.Tables.Companies.GetAsync(Row compId, Partition "Special", connStr)
+                member this.getAllComp compType =
+                    Azure.Tables.Companies.GetPartitionAsync(compType.Name, connStr)
+                member this.insert (entity, mode) =
+                    Azure.Tables.Companies.InsertAsync(entity, insertMode = mode, connectionString = connStr)
+                member this.insert (compType, compId, props, mode) =
+                    let partition = Partition compType.Name
+                    let row = Row compId
+                    Azure.Tables.Companies.InsertAsync(partition, row, props, insertMode = mode, connectionString = connStr)
+                member this.delete entity =
+                    Azure.Tables.Companies.DeleteAsync(entity, connStr) })
+
+    type ProfileEntity = Azure.Domain.ProfilesEntity
+
+    type IProfileStore =
+        abstract member getAllProfiles: unit -> Async<ProfileEntity array>
+        abstract member getProfile: profileId:string -> Async<ProfileEntity option>
+        abstract member getAllSearchAttemptsOf: profileId:string -> Async<ProfileEntity array>
+        abstract member calcNextSearchAttempId: profileId:string -> Async<string*string>
+        abstract member insertSearchAttempt: entity:ProfileEntity -> Async<TableResponse>
+
+    let bumpingId (id:string) = (Convert.ToInt32(id) + 1).ToString().PadLeft(2, '0')
+
+    let ProfileStoreProvider =
+        new Func<IServiceProvider, IProfileStore>(fun sp ->
+            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAccessor.CurrentValue
+            let connStr = appSetting.StorageConnStr
+            { new IProfileStore with
+                member this.getAllProfiles () =
+                    Azure.Tables.Profiles.GetPartitionAsync("profile", connStr)
+                member this.getProfile profileId =
+                    Azure.Tables.Profiles.GetAsync(Row profileId, Partition "profile", connStr)
+                member this.getAllSearchAttemptsOf profileId =
+                    let nextProfileId = bumpingId profileId
+                    Azure.Tables.Profiles.Query()
+                        .``Where Partition Key Is``.``Equal To``("searchAttempt")
+                        .``Where Row Key Is``.``Greater Than``(profileId + "|")
+                        .``Where Row Key Is``.``Less Than``(nextProfileId + "|")
+                        .ExecuteAsync(connectionString = connStr)
+                member this.calcNextSearchAttempId profileId =
+                    let dateStr = DateTime.Now.ToString("yyyy-MM-dd")
+                    let nextDateStr = DateTime.Now.AddDays(1.).ToString("yyyy-MM-dd")
+                    async {
+                        let! previousAttempts =
+                            Azure.Tables.Profiles.Query()
+                                .``Where Partition Key Is``.``Equal To``("searchAttempt")
+                                .``Where Row Key Is``.``Greater Than``(sprintf "%s|%s_" profileId dateStr)
+                                .``Where Row Key Is``.``Less Than``(sprintf "%s|%s_" profileId nextDateStr)
+                                .ExecuteAsync(connectionString = connStr)
+                        let lastAttempt = previousAttempts |> Seq.tryLast
+                        let nextAttemptCount = 
+                            lastAttempt 
+                            |> Option.bind(fun sa -> sa.attempt)
+                            |> Option.map bumpingId 
+                            |> Option.defaultValue("01")
+                        return (sprintf "%s|%s_%s" profileId dateStr nextAttemptCount), nextAttemptCount
+                    } 
+                member this.insertSearchAttempt entity =
+                    Azure.Tables.Profiles.InsertAsync(entity, connectionString = connStr) })
+
+    type JobDataEntity = Azure.Domain.JobDataEntity
+
+    type IJobDataStore = 
+        abstract member getData: dataSetId:string -> Async<JobDataEntity array>
+        abstract member insert: dataSetId:string -> jobId:string -> props:Object -> Async<TableResponse>
+
+    let JobDataStoreProvider =
+        new Func<IServiceProvider, IJobDataStore>(fun sp ->
+            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAccessor.CurrentValue
+            let connStr = appSetting.StorageConnStr
+            { new IJobDataStore with
+                member this.getData dataSetId =
+                    Azure.Tables.JobData.GetPartitionAsync(dataSetId, connStr) 
+                member this.insert dataSetId jobId props =
+                    Azure.Tables.JobData.InsertAsync(Partition dataSetId, Row jobId, props, connectionString = connStr) })
+
+    type QueueMsg = FSharp.Azure.StorageTypeProvider.Queue.ProvidedQueueMessage
+
+    type IBacklogQueue =
+        abstract member dequeue: unit -> Async<QueueMsg option>
+        abstract member enqueue: msgContent:string -> Async<unit>
+        abstract member delete: msg:QueueMsg -> Async<unit>
+        abstract member getCurrentLength: unit -> int
+
+    let BacklogQueueProvider =
+        new Func<IServiceProvider, IBacklogQueue>(fun sp ->
+            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAccessor.CurrentValue
+            let connStr = appSetting.StorageConnStr
+            { new IBacklogQueue with
+                member this.dequeue () =
+                    Azure.Queues.test.Dequeue(connStr)
+                member this.enqueue msgContent =
+                    Azure.Queues.test.Enqueue(msgContent, connStr)
+                member this.delete msg =
+                    Azure.Queues.test.DeleteMessage(msg.Id, connStr)
+                member this.getCurrentLength () =
+                    Azure.Queues.test.GetCurrentLength(connStr) })
+
+
+
 open System.Text.RegularExpressions
 open Newtonsoft.Json
-open FSharp.Control.Tasks
 open Giraffe
-open System
 
 module InnerFuncs =
     let AsFst snd fst = fst, snd
@@ -129,9 +274,9 @@ module InnerFuncs =
         | "10000人以上" -> 8
         | _ -> 2
 
-    
+    open Services
 
-    let dispatchJobDataWorkItems (connStr: string) (profile: Azure.Domain.ProfilesEntity) searchAttemptId (pageResults: JobsResults.Root) =
+    let dispatchJobDataWorkItems (backlogQueue: IBacklogQueue) (profile: ProfileEntity) searchAttemptId (pageResults: JobsResults.Root) =
         let includes = profile.includes |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
         let excludes = profile.excludes |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
         let interestingPositionName pName =
@@ -172,37 +317,14 @@ module InnerFuncs =
                     compId
                     (JsonConvert.SerializeObject compDto))
             )
-        |> Array.iter((fun content -> Azure.Queues.test.Enqueue(content, connStr)) >> Async.Start)
-
-    let bumpingId (id:string) = (Convert.ToInt32(id) + 1).ToString().PadLeft(2, '0')
-
-    let calcSearchAttemptId (connStr: string) profileId =    
-
-        let dateStr = DateTime.Now.ToString("yyyy-MM-dd")
-        let nextDateStr = DateTime.Now.AddDays(1.).ToString("yyyy-MM-dd")
-
-        async {
-            let! previousAttempts =
-                Azure.Tables.Profiles.Query()
-                    .``Where Partition Key Is``.``Equal To``("searchAttempt")
-                    .``Where Row Key Is``.``Greater Than``(sprintf "%s|%s_" profileId dateStr)
-                    .``Where Row Key Is``.``Less Than``(sprintf "%s|%s_" profileId nextDateStr)
-                    .ExecuteAsync(connectionString = connStr)
-            let lastAttempt = previousAttempts |> Seq.tryLast
-            let nextAttemptCount = 
-                lastAttempt 
-                |> Option.bind(fun sa -> sa.attempt)
-                |> Option.map bumpingId 
-                |> Option.defaultValue("01")
-            return (sprintf "%s|%s_%s" profileId dateStr nextAttemptCount), nextAttemptCount
-        }
+        |> Array.iter(backlogQueue.enqueue >> Async.Start)
 
     open System.Configuration
 
-    let awakenWorkers (connStr: string) (deployedSites: string) =
+    let awakenWorkers (backlogQueue: IBacklogQueue) (deployedSites: string) =
         async {
             do! Async.Sleep(50)
-            let remaining = Azure.Queues.test.GetCurrentLength(connStr)
+            let remaining = backlogQueue.getCurrentLength()
             let workerEndpoints =
                 deployedSites.Split(',')
                 |> Array.toList
@@ -218,16 +340,15 @@ module InnerFuncs =
         } |> Async.Start
 
     open ExternalApiClient
-    open FSharp.Azure.StorageTypeProvider.Table
 
-    let search deployedSites connStr profileId =
+    let search deployedSites (profileStore: IProfileStore) (backlogQueue: IBacklogQueue) profileId =
         async {
-            let! profileOption = Azure.Tables.Profiles.GetAsync(Row profileId, Partition "profile", connStr)
+            let! profileOption = profileStore.getProfile profileId
             match profileOption with
             | None -> ()
             | Some profile ->        
                 let! results = queryZhaopinAPI profile 1
-                let! searchAttemptId, nextAttemptCount = calcSearchAttemptId connStr profileId
+                let! searchAttemptId, nextAttemptCount = profileStore.calcNextSearchAttempId profileId
 
                 let total = results.Data.NumFound
                 let pageSize = 90
@@ -236,13 +357,13 @@ module InnerFuncs =
                 if pageCount > 1 then
                     [ 2 .. pageCount ]
                     |> List.map (sprintf "Crawl##%s|%d" searchAttemptId)
-                    |> List.iter ((fun content -> Azure.Queues.test.Enqueue(content, connStr)) >> Async.Start)
+                    |> List.iter (backlogQueue.enqueue >> Async.Start)
         
-                dispatchJobDataWorkItems connStr profile searchAttemptId results
-                awakenWorkers connStr deployedSites
+                dispatchJobDataWorkItems backlogQueue profile searchAttemptId results
+                awakenWorkers backlogQueue deployedSites
 
-                do! Azure.Tables.Profiles.InsertAsync(
-                        new Azure.Domain.ProfilesEntity(
+                do! profileStore.insertSearchAttempt (
+                        new ProfileEntity(
                             Partition "searchAttempt", Row searchAttemptId,
                             attempt = Some nextAttemptCount,
                             city = None,
@@ -254,8 +375,7 @@ module InnerFuncs =
                             maxSalary = None,
                             minSalary = None,
                             name = None
-                        ),
-                        connectionString = connStr
+                        )
                     ) |> Async.Ignore
         }
         
@@ -295,14 +415,15 @@ module InnerFuncs =
                     | _ -> None
             | _ -> None
 
+    open Services
 
-    let getProfileAndCompAsync (connStr: string) (profileId, compId) =
+    let getProfileAndCompAsync (profileStore: IProfileStore) (compStore: ICompStore) (profileId, compId) =
         async {
             let! profileReq = 
-                Azure.Tables.Profiles.GetAsync(Row profileId, Partition "profile", connStr)
+                profileStore.getProfile profileId
                 |> Async.StartChild
             let! compReq =
-                Azure.Tables.Companies.GetAsync(Row compId, Partition "Normal", connStr)
+                compStore.getNormal compId
                 |> Async.StartChild
             let! profile = profileReq
             let! comp = compReq
@@ -311,262 +432,275 @@ module InnerFuncs =
 
 module HttpHandlers =
 
-    open System.Threading.Tasks
     open System.Collections.Generic
     open FSharp.Control.Tasks.V2
-    open FSharp.Azure.StorageTypeProvider.Table
     open Giraffe.HttpStatusCodeHandlers.Successful
     open Giraffe.HttpStatusCodeHandlers.RequestErrors
     open Giraffe.HttpStatusCodeHandlers.ServerErrors
-    open Giraffe.SerilogExtensions
+    open Giraffe.GoodRead
 
     open ExternalApiClient
+    open Services
     open InnerFuncs
 
     let accessDenied = setStatusCode 401 >=> text "Access Denied"
 
-    let simpleAuthn (next: HttpFunc) (ctx: HttpContext) =
-        let logger = ctx.Logger()
-        logger.Information("hello, from test log")
-        let settings = ctx.GetService<IConfiguration>()
-        let isDevEnv = lazy (settings.["ASPNETCORE_ENVIRONMENT"] = "Development")
-        let isWorker = lazy (settings.["IsJNBWorker"] = "true")
-        match isDevEnv, isWorker with
-        | Lazy true, _ -> next
-        | _, Lazy true -> accessDenied next
-        | _ -> requiresAuthentication accessDenied next
-        <| ctx
+    let simpleAuthn =
+        Require.services<IOptionsMonitor<AppSetting>>(fun (optionAppSetting: IOptionsMonitor<AppSetting>) ->
+            let appSetting = optionAppSetting.CurrentValue
+            let isDevEnv = (appSetting.AspNetCoreEnvironment = "Development")
+            let isWorker = (appSetting.IsJNBWorker = "true")
+            let runNext next ctx = next ctx
+            match isDevEnv, isWorker with
+            | true, _ -> runNext
+            | _, true -> accessDenied
+            | _ -> requiresAuthentication accessDenied
+        )
 
-    let getAllProfiles next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        task {
-            let! profiles = Azure.Tables.Profiles.GetPartitionAsync("profile", connStr) |> Async.StartAsTask
-            let payload = 
-                profiles 
-                |> Seq.map(fun p -> 
-                            { Id = p.RowKey
-                              Name = p.name |> Option.defaultValue("undefined") 
-                              MinSalary = p.minSalary |> Option.defaultValue(0.)
-                              MaxSalary = p.maxSalary |> Option.defaultValue(0.)
-                            } )
-            return! (OK payload next ctx)        
-        }
-
-    let getAllDataSets (profileId: int) next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        let profileIdStr = profileId.ToString().PadLeft(2, '0')
-        try
-            let nextProfileId = bumpingId profileIdStr
-            task {
-                let! allAttempts =
-                    Azure.Tables.Profiles.Query()
-                        .``Where Partition Key Is``.``Equal To``("searchAttempt")
-                        .``Where Row Key Is``.``Greater Than``(profileIdStr + "|")
-                        .``Where Row Key Is``.``Less Than``(nextProfileId + "|")
-                        .ExecuteAsync(connectionString = connStr) |> Async.StartAsTask
-                let lst =
-                    allAttempts
-                    |> Seq.map(fun a -> a.RowKey)
-                    |> Seq.rev
-                return! (OK lst next ctx)
+    let getAllProfiles =
+        require {
+            let! profileStore = service<IProfileStore>()
+            return task {
+                let! profiles = profileStore.getAllProfiles() |> Async.StartAsTask
+                let payload = 
+                    profiles 
+                    |> Seq.map(fun p -> 
+                                { Id = p.RowKey
+                                  Name = p.name |> Option.defaultValue("undefined") 
+                                  MinSalary = p.minSalary |> Option.defaultValue(0.)
+                                  MaxSalary = p.maxSalary |> Option.defaultValue(0.)
+                                } )
+                return (OK payload)        
             }
-        with
-        | :? FormatException -> BAD_REQUEST "invalid profile id" next ctx
-        | e -> INTERNAL_ERROR "server error" next ctx
+        } |> Require.apply
 
-    let getJobData (m: JDataQueryModel) next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        task {
-            let! jobData = Azure.Tables.JobData.GetPartitionAsync(m.dataSetId, connStr)
-            let lst =
-                jobData
-                |> Seq.map(fun j ->
-                            { name = j.name
-                              salaryEstimate = j.salaryEstimate
-                              distance = j.distance
-                              link = j.link
-                              category = j.category
-                              companyName = j.companyName
-                              scale = j.scale
-                              color = j.color
-                              markerRadius = j.markerRadius
-                            })
-            return! (OK lst next ctx)
-        }
+    let getAllDataSets (profileId: int) =
+        Require.services<IProfileStore>(fun (profileStore:IProfileStore) ->
+            let profileIdStr = profileId.ToString().PadLeft(2, '0')
+            
+            try
+                task {
+                    let! allAttempts =
+                        profileStore.getAllSearchAttemptsOf profileIdStr
+                    let lst =
+                        allAttempts
+                        |> Seq.map(fun a -> a.RowKey)
+                        |> Seq.rev
+                    return (OK lst)
+                }
+            with
+                | :? FormatException -> task { return (BAD_REQUEST "invalid profile id") }
+                | e -> task { return INTERNAL_ERROR "server error" }        
+        )
+            
 
-    let crawling profileId next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        let deployedSites = settings.["deployed_sites"]
-        search deployedSites connStr profileId |> Async.Start
-        ACCEPTED "Crawling has been scheduled." next ctx
+    let getJobData (m: JDataQueryModel) =
+        Require.services<IJobDataStore>(fun (jobDataStore: IJobDataStore) ->
+            task {
+                let! jobData = jobDataStore.getData(m.dataSetId)
+                let lst =
+                    jobData
+                    |> Seq.map(fun j ->
+                                { name = j.name
+                                  salaryEstimate = j.salaryEstimate
+                                  distance = j.distance
+                                  link = j.link
+                                  category = j.category
+                                  companyName = j.companyName
+                                  scale = j.scale
+                                  color = j.color
+                                  markerRadius = j.markerRadius
+                                })
+                return (OK lst)
+            }
+        )
 
-    let workOnBacklog next (ctx: HttpContext) =        
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        task {
-            match! Azure.Queues.test.Dequeue(connStr) with
-            | None -> ()
-            | Some deqMsg ->
-                if deqMsg.DequeueCount > 4 then 
-                    ()
-                else
-                    let deployedSites = settings.["deployed_sites"]
-                    match deqMsg.Contents with
-                    | CrawlingWork (profileId, searchAttemptId, pageIndex) -> 
-                        match! Azure.Tables.Profiles.GetAsync(Row profileId, Partition "profile", connStr) with
-                        | None -> ()
-                        | Some profile ->
-                            let! result = queryZhaopinAPI profile pageIndex
-                            dispatchJobDataWorkItems connStr profile searchAttemptId result
-                            Azure.Queues.test.DeleteMessage (deqMsg.Id, connStr) |> Async.Start
-                            awakenWorkers connStr deployedSites
+    let crawling profileId =
+        require {
+            let! profileStore = service<IProfileStore>()
+            let! backlogQueue = service<IBacklogQueue>()
+            let! optionAppSetting = service<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAppSetting.CurrentValue
+            let deployedSites = appSetting.DeployedSites
+            search deployedSites profileStore backlogQueue profileId |> Async.Start
+            return ACCEPTED "Crawling has been scheduled."
+        } |> Require.apply
+
+    let workOnBacklog =
+        require {
+            let! compStore = service<ICompStore>()
+            let! profileStore = service<IProfileStore>()
+            let! jobDataStore = service<IJobDataStore>()
+            let! backlogQueue = service<IBacklogQueue>()
+            let! geoSvc = service<IGeoService>()
+            let! optionAppSetting = service<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionAppSetting.CurrentValue
+            let deployedSites = appSetting.DeployedSites
+
+            return task {
+                match! backlogQueue.dequeue() with
+                | None -> ()
+                | Some deqMsg ->
+                    if deqMsg.DequeueCount > 4 then 
                         ()
-                    | JobDataWork (profileId, searchAttemptId, jobDataId, jobDataDto, compPartition, compId, compDto) ->                 
-                        let inline storeJobData distance (distanceMap: Dictionary<string, float>) updComp (compOpt: Azure.Domain.CompaniesEntity option) =
-                            distanceMap.[profileId] <- distance
-                            Azure.Tables.JobData.InsertAsync(
-                                Partition searchAttemptId, Row jobDataId,
-                                {jobDataDto with
-                                    distance = distance.ToString() },
-                                connectionString = connStr
-                            ) |> Async.map(ignore) |> Async.Start
-                            if updComp then
-                                Azure.Tables.Companies.InsertAsync (
-                                    Partition "Normal", Row compId,
-                                    {compDto with
-                                        Distances = JsonConvert.SerializeObject(distanceMap)
-                                        Latitude = compOpt |> function
-                                                            | None -> compDto.Latitude
-                                                            | Some comp -> comp.Latitude |> Option.defaultValue(compDto.Latitude)
-                                        Longitude = compOpt |> function
-                                                            | None -> compDto.Longitude
-                                                            | Some comp -> comp.Longitude |> Option.defaultValue(compDto.Longitude)},
-                                    insertMode = TableInsertMode.Upsert,
-                                    connectionString = connStr
-                                ) |> Async.map(ignore) |> Async.Start
-                
-                        match! (profileId, compId) |> getProfileAndCompAsync connStr with
-                        | None, _ -> ()
-                        | Some profile, None ->
-                            let ak = settings.["baidu_map_app_key"]
-                            if compPartition = "Normal" then
-                                let map = new Dictionary<string, float>()
-                                let! distance = calcDistance ak profile.home (compDto.Latitude, compDto.Longitude)
-                                storeJobData distance map true None
-                                Azure.Queues.test.DeleteMessage (deqMsg.Id, connStr) |> Async.Start
-                            else
-                                Azure.Tables.Companies.InsertAsync(
+                    else
+                        match deqMsg.Contents with
+                        | CrawlingWork (profileId, searchAttemptId, pageIndex) -> 
+                            match! profileStore.getProfile profileId with
+                            | None -> ()
+                            | Some profile ->
+                                let! result = queryZhaopinAPI profile pageIndex
+                                dispatchJobDataWorkItems backlogQueue profile searchAttemptId result
+                                backlogQueue.delete (deqMsg) |> Async.Start
+                                awakenWorkers backlogQueue deployedSites
+                            ()
+                        | JobDataWork (profileId, searchAttemptId, jobDataId, jobDataDto, compPartition, compId, compDto) ->                 
+                            let inline storeJobData distance (distanceMap: Dictionary<string, float>) updComp (compOpt: Azure.Domain.CompaniesEntity option) =
+                                distanceMap.[profileId] <- distance
+                                jobDataStore.insert searchAttemptId jobDataId
+                                    {jobDataDto with
+                                        distance = distance.ToString() }
+                                |> Async.map(ignore) |> Async.Start
+                                if updComp then
+                                    compStore.insert (
+                                        CompType.Normal, compId,
+                                        {compDto with
+                                            Distances = JsonConvert.SerializeObject(distanceMap)
+                                            Latitude = compOpt |> function
+                                                                | None -> compDto.Latitude
+                                                                | Some comp -> comp.Latitude |> Option.defaultValue(compDto.Latitude)
+                                            Longitude = compOpt |> function
+                                                                | None -> compDto.Longitude
+                                                                | Some comp -> comp.Longitude |> Option.defaultValue(compDto.Longitude)},
+                                        TableInsertMode.Upsert
+                                    ) |> Async.map(ignore) |> Async.Start
+                    
+                            match! (profileId, compId) |> getProfileAndCompAsync profileStore compStore with
+                            | None, _ -> ()
+                            | Some profile, None ->
+                                if compPartition = "Normal" then
+                                    let map = new Dictionary<string, float>()
+                                    let! distance = geoSvc.calcDistance profile.home (compDto.Latitude, compDto.Longitude)
+                                    storeJobData distance map true None
+                                    backlogQueue.delete (deqMsg) |> Async.Start
+                                else
+                                    compStore.insert (
+                                        new CompEntity (
+                                            Partition "Special",
+                                            Row compId,
+                                            Name = compDto.Name,
+                                            DetailUrl = compDto.DetailUrl,
+                                            Distances = None,
+                                            Latitude = None,
+                                            Longitude = None
+                                        ), 
+                                        TableInsertMode.Upsert) |> Async.map(ignore) |> Async.Start
+                            | Some profile, Some comp ->
+                                let map = 
+                                    comp.Distances 
+                                    |> Option.defaultValue("{}") 
+                                    |> JsonConvert.DeserializeObject<Dictionary<string, float>>
+                                let! updComp, distance =
+                                    map.TryGetValue(profileId)
+                                    |> function
+                                    | true, d -> async { return false, d }
+                                    | false, _ -> 
+                                        let compGeo =
+                                            comp.Latitude |> Option.defaultValue(0.),
+                                            comp.Longitude |> Option.defaultValue(0.)
+                                        async {
+                                            let! d = geoSvc.calcDistance profile.home compGeo
+                                            return (true, d)
+                                        }
+
+                                storeJobData distance map updComp (Some comp)
+                                backlogQueue.delete deqMsg |> Async.Start
+                            awakenWorkers backlogQueue deployedSites
+                        | _ -> ()
+                return (ACCEPTED "worker is processing")
+            }
+        } |> Require.apply
+
+    let searchAndUpdateCompGeo (m: CompGeoSearchModel) =
+        require {
+            let! compStore = service<ICompStore>()
+            let! geoService = service<IGeoService>()
+            let! optionsAppSetting = service<IOptionsMonitor<AppSetting>>()
+            let appSetting = optionsAppSetting.CurrentValue
+            let connStr = appSetting.StorageConnStr
+
+            return task {
+                match! compStore.getSpecial m.compId with
+                | None -> return (BAD_REQUEST "no such company")
+                | Some comp ->
+                    match! geoService.searchGeoCode m.addr with
+                    | None -> return (OK "geo code not found")
+                    | Some (lat, lon) ->
+                        compStore.insert(
+                            new CompEntity(
+                                Partition "Normal",
+                                Row comp.RowKey,
+                                Name = comp.Name,
+                                DetailUrl = comp.DetailUrl,
+                                Distances = Some "{}",
+                                Latitude = Some (float lat),
+                                Longitude = Some (float lon)
+                            ), TableInsertMode.Upsert) 
+                        |> Async.map(ignore) |> Async.Start
+                        compStore.delete(comp)
+                        |> Async.map(ignore) |> Async.Start
+                        return (OK "company geo code updated")
+            }
+        } |> Require.apply
+
+
+    let companyDoubt (profileId: string) =
+        require {
+            let! compStore = service<ICompStore>()
+            return task {
+                let! all = compStore.getAllComp CompType.Normal
+                all
+                |> Seq.filter(fun (c: CompEntity) ->
+                                    c.Distances
+                                    |> Option.bind(fun ds -> 
+                                                    let map = JsonConvert.DeserializeObject<Dictionary<string, float>>(ds)
+                                                    map.TryGetValue(profileId)
+                                                    |> function
+                                                    | (true, d) -> Some (d > 50.)
+                                                    | (false, _) -> Some false)
+                                    |> Option.defaultValue(true))
+                |> Seq.iter(fun c ->
+                                compStore.insert(
                                     new Azure.Domain.CompaniesEntity(
-                                        Partition "Special",
-                                        Row compId,
-                                        Name = compDto.Name,
-                                        DetailUrl = compDto.DetailUrl,
-                                        Distances = None,
+                                        Partition "Special", Row c.RowKey,
+                                        Name = c.Name,
+                                        DetailUrl = c.DetailUrl,
                                         Latitude = None,
-                                        Longitude = None
-                                    ), 
-                                    insertMode = TableInsertMode.Upsert,
-                                    connectionString = connStr) |> Async.map(ignore) |> Async.Start
-                        | Some profile, Some comp ->
-                            let ak = settings.["baidu_map_app_key"]
-                            let map = 
-                                comp.Distances 
-                                |> Option.defaultValue("{}") 
-                                |> JsonConvert.DeserializeObject<Dictionary<string, float>>
-                            let! updComp, distance =
-                                map.TryGetValue(profileId)
-                                |> function
-                                | true, d -> async { return false, d }
-                                | false, _ -> 
-                                    let compGeo =
-                                        comp.Latitude |> Option.defaultValue(0.),
-                                        comp.Longitude |> Option.defaultValue(0.)
-                                    async {
-                                        let! d = calcDistance ak profile.home compGeo
-                                        return (true, d)
-                                    }
+                                        Longitude = None,
+                                        Distances = None)
+                                    , TableInsertMode.Upsert)
+                                |> Async.map(ignore) |> Async.Start) 
+                return OK "completed"
+            }
+        } |> Require.apply
 
-                            storeJobData distance map updComp (Some comp)
-                            Azure.Queues.test.DeleteMessage (deqMsg.Id, connStr) |> Async.Start
-                        awakenWorkers connStr deployedSites
-                    | _ -> ()
-            return! (ACCEPTED "worker is processing" next ctx)
-        }
+    let test compId =
+        require {
+            let! profileStore = service<IProfileStore>()
+            let! compStore = service<ICompStore>()
+            let! geoSvc = service<IGeoService>()
+            let failCase = async { return 1000. }
 
-    let searchAndUpdateCompGeo (m: CompGeoSearchModel) next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        task {
-            match! Azure.Tables.Companies.GetAsync(Row m.compId, Partition "Special", connStr) with
-            | None -> return! (BAD_REQUEST "no such company" next ctx)
-            | Some comp ->
-                let ak = settings.["baidu_map_app_key"]
-                match! searchGeoCode ak m.addr with
-                | None -> return! (OK "geo code not found" next ctx)
-                | Some (lat, lon) ->
-                    Azure.Tables.Companies.InsertAsync(
-                        new Azure.Domain.CompaniesEntity(
-                            Partition "Normal",
-                            Row comp.RowKey,
-                            Name = comp.Name,
-                            DetailUrl = comp.DetailUrl,
-                            Distances = Some "{}",
-                            Latitude = Some (float lat),
-                            Longitude = Some (float lon)
-                        ), TableInsertMode.Upsert, connStr) 
-                    |> Async.map(ignore) |> Async.Start
-                    Azure.Tables.Companies.DeleteAsync(comp, connStr)
-                    |> Async.map(ignore) |> Async.Start
-                    return! (OK "company geo code updated" next ctx)
-        }
-
-    let companyDoubt (profileId: string) next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        task {
-            let! all = Azure.Tables.Companies.GetPartitionAsync("Normal", connStr)
-            all
-            |> Seq.filter(fun (c: Azure.Domain.CompaniesEntity) ->
-                                c.Distances
-                                |> Option.bind(fun ds -> 
-                                                let map = JsonConvert.DeserializeObject<Dictionary<string, float>>(ds)
-                                                map.TryGetValue(profileId)
-                                                |> function
-                                                | (true, d) -> Some (d > 50.)
-                                                | (false, _) -> Some false)
-                                |> Option.defaultValue(true))
-            |> Seq.iter(fun c ->
-                            Azure.Tables.Companies.InsertAsync(
-                                new Azure.Domain.CompaniesEntity(
-                                    Partition "Special", Row c.RowKey,
-                                    Name = c.Name,
-                                    DetailUrl = c.DetailUrl,
-                                    Latitude = None,
-                                    Longitude = None,
-                                    Distances = None)
-                                , TableInsertMode.Upsert, connStr)
-                            |> Async.map(ignore) |> Async.Start) 
-            return! OK "completed" next ctx
-        }
-
-    let test compId next (ctx: HttpContext) =
-        let settings = ctx.GetService<IConfiguration>()
-        let connStr = settings.["storage_conn_str"]
-        let failCase = async { return 1000. }
-        task {
-            let! pc = ("01", compId) |> getProfileAndCompAsync connStr 
-            let! d =
-                match pc with
-                | Some profile, Some comp ->
-                    let ak = settings.["baidu_map_app_key"]
-                    match comp.Latitude, comp.Longitude with
-                    | Some lat, Some lon ->
-                        calcDistance ak profile.home (lat, lon)
+            return task {
+                let! pc = ("01", compId) |> getProfileAndCompAsync profileStore compStore 
+                let! d =
+                    match pc with
+                    | Some profile, Some comp ->
+                        match comp.Latitude, comp.Longitude with
+                        | Some lat, Some lon ->
+                            geoSvc.calcDistance profile.home (lat, lon)
+                        | _ -> failCase
                     | _ -> failCase
-                | _ -> failCase
-            return! (OK (d.ToString()) next ctx)
-        }
+                return (OK (d.ToString()))
+            }
+        } |> Require.apply

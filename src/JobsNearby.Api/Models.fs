@@ -52,3 +52,11 @@ type JDataQueryModel =
 [<CLIMutable>]
 type CompGeoSearchModel =
     { compId: string; addr: string }
+
+[<CLIMutable>]
+type AppSetting = 
+    { BaiduMapAppKey: string
+      DeployedSites: string
+      StorageConnStr: string
+      AspNetCoreEnvironment: string
+      IsJNBWorker: string }

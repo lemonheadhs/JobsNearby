@@ -15,10 +15,14 @@ open JobsNearby.Api.HttpHandlers
 open Microsoft.Extensions.Configuration
 open Serilog
 open Giraffe.SerilogExtensions
+open JobsNearby.Api.Models
+open JobsNearby.Api.Services
 
 // ---------------------------------
 // Web app
 // ---------------------------------
+
+Serilog.Debugging.SelfLog.Enable(Console.Error)
 
 let webApp =
     choose [
@@ -78,14 +82,18 @@ let configureApp (app : IApplicationBuilder) =
         .UseStaticFiles()
         .UseGiraffe(webAppWithLogging)
 
-let configureServices (services : IServiceCollection) =
+let configureServices (hostCtx: WebHostBuilderContext) (services : IServiceCollection) =
+    let config = hostCtx.Configuration
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
+    services.Configure<AppSetting>(config) |> ignore
+    services.AddScoped<IGeoService>(GeoServiceProvider) |> ignore
 
 let serilogInit (hostCtx: WebHostBuilderContext) (loggerConfig: LoggerConfiguration) = 
     loggerConfig
         .ReadFrom.Configuration(hostCtx.Configuration)
         .Enrich.FromLogContext()
+        .Destructure.FSharpTypes()
         .WriteTo.Console()
     |> ignore
 
@@ -99,9 +107,9 @@ let main _ =
         .UseContentRoot(contentRoot)
         .UseIISIntegration()
         .UseWebRoot(webRoot)
-        .UseSerilog(serilogInit)
         .ConfigureAppConfiguration(configureAppConfig)
         .Configure(Action<IApplicationBuilder> configureApp)
+        .UseSerilog(serilogInit)
         .ConfigureServices(configureServices)
         .Build()
         .Run()
