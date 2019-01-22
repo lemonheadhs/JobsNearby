@@ -4,9 +4,9 @@ open System
 open FSharp.Data
 open JobsNearby.Api.Models
 open Microsoft.AspNetCore.Http
-open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Options
 open FSharp.Azure.StorageTypeProvider.Table
+open Serilog
 
 module ExternalApiClient =
 
@@ -276,6 +276,10 @@ module InnerFuncs =
 
     open Services
 
+    let tap<'t> (action: 't -> unit) (objct: 't) =
+        action objct
+        objct
+
     let dispatchJobDataWorkItems (backlogQueue: IBacklogQueue) (profile: ProfileEntity) searchAttemptId (pageResults: JobsResults.Root) =
         let includes = profile.includes |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
         let excludes = profile.excludes |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
@@ -284,6 +288,7 @@ module InnerFuncs =
 
         pageResults.Data.Results
         |> Array.where(fun r -> interestingPositionName r.JobName)
+        |> tap (fun arr -> Log.Debug("{count} interesting position in this round, related dataSetId {dataSetId}", arr.Length, searchAttemptId))
         |> Array.map(fun job -> 
                 let jobDataId = job.Number
                 let jobDto = {
@@ -335,6 +340,7 @@ module InnerFuncs =
                     | x when x > 20 -> l @ l
                     | _ -> l
             workerEndpoints
+            |> tap (fun lst -> Log.Verbose("backlog with {remaining} items, try to awaken workers {workerEndpoints}", remaining, workerEndpoints))
             |> List.map(fun s -> Http.AsyncRequest(s, httpMethod = "POST"))
             |> List.iter (Async.map(ignore) >> Async.Start)
         } |> Async.Start
@@ -343,9 +349,8 @@ module InnerFuncs =
 
     let search deployedSites (profileStore: IProfileStore) (backlogQueue: IBacklogQueue) profileId =
         async {
-            let! profileOption = profileStore.getProfile profileId
-            match profileOption with
-            | None -> ()
+            match! profileStore.getProfile profileId with
+            | None -> Log.Debug("can't find profile {profileId}", profileId)
             | Some profile ->        
                 let! results = queryZhaopinAPI profile 1
                 let! searchAttemptId, nextAttemptCount = profileStore.calcNextSearchAttempId profileId
@@ -354,6 +359,8 @@ module InnerFuncs =
                 let pageSize = 90
                 let pageCount = total / pageSize + 1
                         
+                Log.Debug("trial cawling find out total {total} items, will split into {pageCount} requests, related dataSetId {dataSetId}", total, pageCount, searchAttemptId)
+
                 if pageCount > 1 then
                     [ 2 .. pageCount ]
                     |> List.map (sprintf "Crawl##%s|%d" searchAttemptId)
@@ -443,7 +450,11 @@ module HttpHandlers =
     open Services
     open InnerFuncs
 
-    let accessDenied = setStatusCode 401 >=> text "Access Denied"
+    let tap (action: unit -> unit) (next: HttpFunc) (ctx: HttpContext) =
+        action ()
+        next ctx
+
+    let accessDenied = setStatusCode 401 >=> text "Access Denied" >=> tap (fun _ -> Log.Debug("Access Denied"))
 
     let simpleAuthn =
         Require.services<IOptionsMonitor<AppSetting>>(fun (optionAppSetting: IOptionsMonitor<AppSetting>) ->
@@ -452,9 +463,15 @@ module HttpHandlers =
             let isWorker = (appSetting.IsJNBWorker = "true")
             let runNext next ctx = next ctx
             match isDevEnv, isWorker with
-            | true, _ -> runNext
-            | _, true -> accessDenied
-            | _ -> requiresAuthentication accessDenied
+            | true, _ -> 
+                Log.Information("Skip Authn")
+                runNext
+            | _, true -> 
+                Log.Information("Worker Site Access Denied")
+                accessDenied
+            | _ -> 
+                Log.Information("Start Authn")
+                requiresAuthentication accessDenied
         )
 
     let getAllProfiles =
@@ -489,8 +506,12 @@ module HttpHandlers =
                     return (OK lst)
                 }
             with
-                | :? FormatException -> task { return (BAD_REQUEST "invalid profile id") }
-                | e -> task { return INTERNAL_ERROR "server error" }        
+                | :? FormatException as ex -> 
+                    Log.Warning(ex, "invalid profile id {profileId}", profileId)
+                    task { return (BAD_REQUEST "invalid profile id") }
+                | e -> 
+                    Log.Warning(e, "server error")
+                    task { return INTERNAL_ERROR "server error" }        
         )
             
 
@@ -515,13 +536,15 @@ module HttpHandlers =
             }
         )
 
-    let crawling profileId =
+    let crawling (profileId: string) =
         require {
             let! profileStore = service<IProfileStore>()
             let! backlogQueue = service<IBacklogQueue>()
             let! optionAppSetting = service<IOptionsMonitor<AppSetting>>()
             let appSetting = optionAppSetting.CurrentValue
             let deployedSites = appSetting.DeployedSites
+
+            Log.Information("start to crawling job data per profile {profileId}", profileId)
             search deployedSites profileStore backlogQueue profileId |> Async.Start
             return ACCEPTED "Crawling has been scheduled."
         } |> Require.apply
@@ -538,17 +561,20 @@ module HttpHandlers =
             let deployedSites = appSetting.DeployedSites
 
             return task {
+                Log.Information("peeking backlog")
                 match! backlogQueue.dequeue() with
-                | None -> ()
+                | None -> Log.Debug("found no visible message from backlog")
                 | Some deqMsg ->
                     if deqMsg.DequeueCount > 4 then 
-                        ()
+                        Log.Debug("message {deqMsg} was failed to be handle more than 5 times, abort the message", deqMsg)
                     else
                         match deqMsg.Contents with
                         | CrawlingWork (profileId, searchAttemptId, pageIndex) -> 
                             match! profileStore.getProfile profileId with
                             | None -> ()
                             | Some profile ->
+                                Log.Debug("find a CrawlingWork message, profile {profileId}, related dataSetId {dataSetId}, request N.O. {pageIndex}", 
+                                    profileId, searchAttemptId, pageIndex)
                                 let! result = queryZhaopinAPI profile pageIndex
                                 dispatchJobDataWorkItems backlogQueue profile searchAttemptId result
                                 backlogQueue.delete (deqMsg) |> Async.Start
@@ -574,10 +600,14 @@ module HttpHandlers =
                                                                 | Some comp -> comp.Longitude |> Option.defaultValue(compDto.Longitude)},
                                         TableInsertMode.Upsert
                                     ) |> Async.map(ignore) |> Async.Start
-                    
+
+                            Log.Debug("find a JobDataWork message, profile {profileId}, related dataSetId {dataSetId}, job id {jobDataId}, job detail {jobData}, company id {companyId} and name {companyName}", 
+                                profileId, searchAttemptId, jobDataId, jobDataDto, compId, compDto.Name)
+
                             match! (profileId, compId) |> getProfileAndCompAsync profileStore compStore with
                             | None, _ -> ()
                             | Some profile, None ->
+                                Log.Debug("company {companyId} not found in database, about to create new {companyType} {compangData}", compId, compPartition, compDto)
                                 if compPartition = "Normal" then
                                     let map = new Dictionary<string, float>()
                                     let! distance = geoSvc.calcDistance profile.home (compDto.Latitude, compDto.Longitude)
@@ -616,7 +646,7 @@ module HttpHandlers =
                                 storeJobData distance map updComp (Some comp)
                                 backlogQueue.delete deqMsg |> Async.Start
                             awakenWorkers backlogQueue deployedSites
-                        | _ -> ()
+                        | _ -> Log.Warning("Unexpected message {deqMsgContent}", deqMsg.Contents.Value)
                 return (ACCEPTED "worker is processing")
             }
         } |> Require.apply
