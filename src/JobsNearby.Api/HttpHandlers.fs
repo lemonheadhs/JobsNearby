@@ -99,8 +99,8 @@ module Services =
 
     let GeoServiceProvider = 
         new Func<IServiceProvider, IGeoService>( fun (sp: IServiceProvider) ->
-            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAccessor.CurrentValue
+            let optionAccessor = sp.GetService<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAccessor.Value
             { new IGeoService with
                 member this.searchGeoCode addr = searchGeoCode appSetting.BaiduMapAppKey addr
                 member this.calcDistance homeLoc compGeoInfo = calcDistance appSetting.BaiduMapAppKey homeLoc compGeoInfo })
@@ -124,8 +124,8 @@ module Services =
 
     let CompStoreProvider =
         new Func<IServiceProvider, ICompStore>(fun sp ->
-            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAccessor.CurrentValue
+            let optionAccessor = sp.GetService<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAccessor.Value
             let connStr = appSetting.StorageConnStr
             { new ICompStore with
                 member this.getNormal compId =
@@ -156,8 +156,8 @@ module Services =
 
     let ProfileStoreProvider =
         new Func<IServiceProvider, IProfileStore>(fun sp ->
-            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAccessor.CurrentValue
+            let optionAccessor = sp.GetService<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAccessor.Value
             let connStr = appSetting.StorageConnStr
             { new IProfileStore with
                 member this.getAllProfiles () =
@@ -200,8 +200,8 @@ module Services =
 
     let JobDataStoreProvider =
         new Func<IServiceProvider, IJobDataStore>(fun sp ->
-            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAccessor.CurrentValue
+            let optionAccessor = sp.GetService<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAccessor.Value
             let connStr = appSetting.StorageConnStr
             { new IJobDataStore with
                 member this.getData dataSetId =
@@ -219,8 +219,8 @@ module Services =
 
     let BacklogQueueProvider =
         new Func<IServiceProvider, IBacklogQueue>(fun sp ->
-            let optionAccessor = sp.GetService<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAccessor.CurrentValue
+            let optionAccessor = sp.GetService<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAccessor.Value
             let connStr = appSetting.StorageConnStr
             { new IBacklogQueue with
                 member this.dequeue () =
@@ -457,9 +457,9 @@ module HttpHandlers =
     let accessDenied = setStatusCode 401 >=> text "Access Denied" >=> tap (fun _ -> Log.Debug("Access Denied"))
 
     let simpleAuthn =
-        Require.services<IOptionsMonitor<AppSetting>>(fun (optionAppSetting: IOptionsMonitor<AppSetting>) ->
-            let appSetting = optionAppSetting.CurrentValue
-            let isDevEnv = (appSetting.AspNetCoreEnvironment = "Development")
+        Require.services<IOptionsSnapshot<AppSetting>>(fun (optionAppSetting: IOptionsSnapshot<AppSetting>) ->
+            let appSetting = optionAppSetting.Value
+            let isDevEnv = (appSetting.AspNetCore_Environment = "Development")
             let isWorker = (appSetting.IsJNBWorker = "true")
             let runNext next ctx = next ctx
             match isDevEnv, isWorker with
@@ -540,8 +540,8 @@ module HttpHandlers =
         require {
             let! profileStore = service<IProfileStore>()
             let! backlogQueue = service<IBacklogQueue>()
-            let! optionAppSetting = service<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAppSetting.CurrentValue
+            let! optionAppSetting = service<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAppSetting.Value
             let deployedSites = appSetting.DeployedSites
 
             Log.Information("start to crawling job data per profile {profileId}", profileId)
@@ -556,8 +556,8 @@ module HttpHandlers =
             let! jobDataStore = service<IJobDataStore>()
             let! backlogQueue = service<IBacklogQueue>()
             let! geoSvc = service<IGeoService>()
-            let! optionAppSetting = service<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionAppSetting.CurrentValue
+            let! optionAppSetting = service<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionAppSetting.Value
             let deployedSites = appSetting.DeployedSites
 
             return task {
@@ -655,8 +655,8 @@ module HttpHandlers =
         require {
             let! compStore = service<ICompStore>()
             let! geoService = service<IGeoService>()
-            let! optionsAppSetting = service<IOptionsMonitor<AppSetting>>()
-            let appSetting = optionsAppSetting.CurrentValue
+            let! optionsAppSetting = service<IOptionsSnapshot<AppSetting>>()
+            let appSetting = optionsAppSetting.Value
             let connStr = appSetting.StorageConnStr
 
             return task {

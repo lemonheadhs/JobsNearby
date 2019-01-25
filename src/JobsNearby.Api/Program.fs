@@ -17,6 +17,7 @@ open Serilog
 open Giraffe.SerilogExtensions
 open JobsNearby.Api.Models
 open JobsNearby.Api.Services
+open Serilog.Formatting.Json
 
 // ---------------------------------
 // Web app
@@ -46,6 +47,9 @@ let webApp =
 
 let serilogConfig =
     { SerilogConfig.defaults with
+        IgnoredRequestFields = 
+            Ignore.fromRequest
+            |> fun (Choser lst) -> Choser ("Response.ContentLength" :: lst)
         ErrorHandler = 
             fun ex httpContext ->
                 clearResponse >=> setStatusCode 500 >=> text ex.Message}
@@ -88,13 +92,18 @@ let configureServices (hostCtx: WebHostBuilderContext) (services : IServiceColle
     services.AddGiraffe() |> ignore
     services.Configure<AppSetting>(config) |> ignore
     services.AddScoped<IGeoService>(GeoServiceProvider) |> ignore
+    services.AddScoped<ICompStore>(CompStoreProvider) |> ignore
+    services.AddScoped<IProfileStore>(ProfileStoreProvider) |> ignore
+    services.AddScoped<IJobDataStore>(JobDataStoreProvider) |> ignore
+    services.AddScoped<IBacklogQueue>(BacklogQueueProvider) |> ignore
 
 let serilogInit (hostCtx: WebHostBuilderContext) (loggerConfig: LoggerConfiguration) = 
     loggerConfig
         .ReadFrom.Configuration(hostCtx.Configuration)
         .Enrich.FromLogContext()
         .Destructure.FSharpTypes()
-        .WriteTo.Console()
+        // .WriteTo.Console()
+        // .WriteTo.Console(new JsonFormatter())
     |> ignore
 
 let contentRoot = Directory.GetCurrentDirectory()

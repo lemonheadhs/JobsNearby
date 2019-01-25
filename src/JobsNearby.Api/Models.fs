@@ -58,5 +58,5 @@ type AppSetting =
     { BaiduMapAppKey: string
       DeployedSites: string
       StorageConnStr: string
-      AspNetCoreEnvironment: string
+      AspNetCore_Environment: string
       IsJNBWorker: string }
