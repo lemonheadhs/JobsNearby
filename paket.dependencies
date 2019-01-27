@@ -6,6 +6,7 @@ nuget Microsoft.AspNetCore.App 2.2.0
 nuget Giraffe
 nuget Microsoft.NET.Test.Sdk
 nuget Microsoft.AspNetCore.TestHost
+nuget Serilog.Sinks.AzureTableStorage
 nuget xunit
 nuget xunit.runner.visualstudio
 nuget FSharp.Azure.StorageTypeProvider

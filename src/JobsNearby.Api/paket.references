@@ -8,3 +8,4 @@ Serilog.Sinks.Console
 Serilog.Settings.Configuration
 Giraffe.SerilogExtensions
 Giraffe.GoodRead
+Serilog.Sinks.AzureTableStorage
