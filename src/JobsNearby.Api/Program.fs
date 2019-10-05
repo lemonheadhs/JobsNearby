@@ -84,6 +84,7 @@ let configureApp (app : IApplicationBuilder) =
         .UseHttpsRedirection()
         .UseCors(configureCors)
         .UseStaticFiles()
+        // .UseAuthentication()
         .UseGiraffe(webAppWithLogging)
 
 let configureServices (hostCtx: WebHostBuilderContext) (services : IServiceCollection) =

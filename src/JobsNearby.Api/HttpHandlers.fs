@@ -237,6 +237,7 @@ module Services =
 open System.Text.RegularExpressions
 open Newtonsoft.Json
 open Giraffe
+open Giraffe.SerilogExtensions.Extensions
 
 module InnerFuncs =
     let AsFst snd fst = fst, snd
@@ -439,6 +440,7 @@ module InnerFuncs =
 
 module HttpHandlers =
 
+    open System.Security.Claims
     open System.Collections.Generic
     open FSharp.Control.Tasks.V2
     open Giraffe.HttpStatusCodeHandlers.Successful
@@ -456,6 +458,9 @@ module HttpHandlers =
 
     let accessDenied = setStatusCode 401 >=> text "Access Denied" >=> tap (fun _ -> Log.Debug("Access Denied"))
 
+    let verifyEasyAuthHeader (ctx: HttpContext) =
+        ctx.Request.Headers.ContainsKey "X-MS-CLIENT-PRINCIPAL-NAME"
+
     let simpleAuthn =
         Require.services<IOptionsSnapshot<AppSetting>>(fun (optionAppSetting: IOptionsSnapshot<AppSetting>) ->
             let appSetting = optionAppSetting.Value
@@ -471,7 +476,7 @@ module HttpHandlers =
                 accessDenied
             | _ -> 
                 Log.Information("Start Authn")
-                requiresAuthentication accessDenied
+                authorizeRequest verifyEasyAuthHeader accessDenied
         )
 
     let getAllProfiles =

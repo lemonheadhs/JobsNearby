@@ -21,6 +21,7 @@ src/JobsNearby.Api/App.config
 src/JobsNearby.Api/appsettings.Development.json
 zipTemp/
 my.azureauth
+.ionide/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
