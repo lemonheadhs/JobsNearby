@@ -1,0 +1,10 @@
+FSharp.Core
+TaskBuilder.fs
+FSharp.Data
+Newtonsoft.Json
+group azfunc
+Microsoft.NET.Sdk.Functions
+Microsoft.Azure.WebJobs.Extensions.Storage
+Microsoft.Azure.WebJobs.Extensions.DurableTask
+Microsoft.Azure.Storage.Queue
+Microsoft.Azure.Cosmos.Table

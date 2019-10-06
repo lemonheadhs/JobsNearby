@@ -13,7 +13,7 @@
             },
             "problemMatcher": "$msCompile",
             "options": {
-                "cwd": "./src/JobsNearby.Api"
+                "cwd": "."
             }
         }
     ]

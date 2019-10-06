@@ -1,0 +1,4 @@
+FSharp.Core
+TaskBuilder.fs
+FSharp.Data
+Newtonsoft.Json

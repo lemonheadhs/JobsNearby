@@ -42,7 +42,7 @@ let webApp =
                     routef "/compay/doubt/p/%s" companyDoubt                    
                 ]
             ])
-        POST >=> route "/worker/start" >=> workOnBacklog
+        // POST >=> route "/worker/start" >=> workOnBacklog1
         setStatusCode 404 >=> text "Not Found" ]
 
 let serilogConfig =

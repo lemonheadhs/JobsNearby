@@ -1,5 +1,6 @@
 storage: none
 source https://api.nuget.org/v3/index.json
+framework: netcoreapp2.2
 
 nuget Giraffe.GoodRead
 nuget Microsoft.AspNetCore.App 2.2.0
@@ -10,12 +11,25 @@ nuget Serilog.Sinks.AzureTableStorage
 nuget xunit
 nuget xunit.runner.visualstudio
 nuget FSharp.Azure.StorageTypeProvider
-nuget FSharp.Data
 nuget Newtonsoft.Json
 nuget Serilog.AspNetCore
 nuget Serilog.Sinks.Console
 nuget Serilog.Settings.Configuration
 nuget Giraffe.SerilogExtensions
+nuget FSharp.Core
+nuget FSharp.Data
+nuget TaskBuilder.fs
+
+group azfunc
+    storage: none
+    source https://api.nuget.org/v3/index.json
+    framework: netcoreapp2.2
+
+    nuget Microsoft.Azure.Cosmos.Table
+    nuget Microsoft.Azure.Storage.Queue
+    nuget Microsoft.NET.Sdk.Functions 1.0.29
+    nuget Microsoft.Azure.WebJobs.Extensions.DurableTask
+    nuget Microsoft.Azure.WebJobs.Extensions.Storage
 
 group scripts
     source https://www.nuget.org/api/v2
