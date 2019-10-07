@@ -175,10 +175,10 @@ module InnerFuncs =
             match! profileStore.getProfile profileId with
             | None -> Log.Debug("can't find profile {profileId}", profileId)
             | Some profile ->        
-                let! results = queryZhaopinAPI profile 1
+                let! results = queryZhaopinAPI profile 1 |> Async.AwaitTask
                 let! searchAttemptId, nextAttemptCount = profileStore.calcNextSearchAttempId profileId
 
-                let total = results.Data.NumFound
+                let total = results.NumTotal
                 let pageSize = 90
                 let pageCount = total / pageSize + 1
                         

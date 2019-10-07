@@ -42,8 +42,8 @@ let RunOrchestrator([<OrchestrationTrigger>] context: DurableOrchestrationContex
             match queueMsg with
 
             | CrawlingWork (_, _, pageIndex) -> 
-                let! result = context.CallActivityAsync<JobsResults.Root>("queryZhaopinAPI", struct(profile, pageIndex))
-                let! jobDataList = context.CallActivityAsync<string []>("getUsefulJobDataItems", struct(profile, info.SearchAttemptId, result))
+                let! result = context.CallActivityAsync<JobsResultsDto>("queryZhaopinAPI", struct(profile, pageIndex))
+                let! jobDataList = context.CallActivityAsync<JobDataIntermediate []>("getUsefulJobDataItems", struct(profile, info.SearchAttemptId, result))
                 let pushAll =
                     jobDataList
                     |> Array.map (fun s -> context.CallActivityAsync("pushBacklog", s))
@@ -66,7 +66,7 @@ let RunOrchestrator([<OrchestrationTrigger>] context: DurableOrchestrationContex
                         | true, d -> Some d
                         | false, _ -> None
                     if Option.isNone distanceOption then
-                        let! d = context.CallActivityAsync<float>("calcDistance", struct(profile.Home |> String.toOption, company.Latitude, company.Longitude))
+                        let! d = context.CallActivityAsync<float>("calcDistance", struct(String.toOption(profile.home), company.Latitude, company.Longitude))
                         distance <- d
                         map.[info.ProfileId] <- d
                         do! context.CallActivityAsync("saveCompany", 
@@ -82,7 +82,7 @@ let RunOrchestrator([<OrchestrationTrigger>] context: DurableOrchestrationContex
                 | None ->
                     if compPartition = "Normal" then
                         let map = new Dictionary<string, float>()
-                        let! d = context.CallActivityAsync<float>("calcDistance", struct(profile.Home |> String.toOption, compDto.Latitude, compDto.Longitude))
+                        let! d = context.CallActivityAsync<float>("calcDistance", struct(profile.home |> String.toOption, compDto.Latitude, compDto.Longitude))
                         map.[info.ProfileId] <- d
                         do! context.CallActivityAsync("saveCompany", 
                                 struct(CompType.Normal, compId, 

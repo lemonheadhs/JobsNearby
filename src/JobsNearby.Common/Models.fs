@@ -46,9 +46,35 @@ type ProfileVm =
       MinSalary : float
       MaxSalary : float }
 
+[<CLIMutable>]
+type JobDataIntermediate = {
+    Prefix:string
+    CompId:string
+    CompDto:CompanyDto
+    JobUrl:string
+}
+
 type JobsResults = FSharp.Data.JsonProvider<"../../samples/jobs.json">
 
 type RouteInfo = JsonProvider<"../../samples/routeSearchResp.json">
 
 type GeoCodeInfo = JsonProvider<"../../samples/geoCodeSearchResp.json">
 
+[<CLIMutable>]
+type JobResultDto = {
+    JobName:string
+    Number:string
+    CompanyTypeName:string
+    CompanyName:string
+    PositionUrl:string
+    CompanySizeName:string
+    Salary:string
+    CompanyNumber:string
+    CompanyUrl:string
+}
+
+[<CLIMutable>]
+type JobsResultsDto = {
+    NumTotal:int
+    Results: JobResultDto []
+}

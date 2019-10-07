@@ -2,8 +2,10 @@ module JobsNearby.Common.ExternalApi
 
 open System
 open FSharp.Data
+open FSharp.Control.Tasks
 
 open JobsNearby.Common.Models
+open System.Threading.Tasks
 
 type String with
     static member toOption (s:string) =
@@ -23,7 +25,7 @@ let defaultSearchParamsMap =
       "salary", "6000,15000"
     ] |> Map
 
-let queryZhaopinAPI (profile: ProfileDto) pageIndex =            
+let queryZhaopinAPI (profile: ProfileDto) pageIndex : Task<JobsResultsDto> =            
     let apiEndpoint = "https://fe-api.zhaopin.com/c/i/sou"
     let query = 
         seq {
@@ -45,12 +47,27 @@ let queryZhaopinAPI (profile: ProfileDto) pageIndex =
                         let k, v = p
                         Map.add k v s) 
                         defaultSearchParamsMap
-    async {
+    task {
         let! resp =
             Http.AsyncRequestString
                 (apiEndpoint,
                     query = (options |> Map.toList))
-        return JobsResults.Parse resp        
+        let result = JobsResults.Parse resp
+        return { 
+            NumTotal = result.Data.NumTotal
+            Results =
+                result.Data.Results
+                |> Array.map (fun job ->
+                                { JobName = job.JobName
+                                  Number = job.Number
+                                  CompanyTypeName = job.Company.Type.Name
+                                  CompanyName = job.Company.Name
+                                  PositionUrl = job.PositionUrl
+                                  CompanySizeName = job.Company.Size.Name
+                                  Salary = job.Salary
+                                  CompanyNumber = job.Company.Number
+                                  CompanyUrl = job.Company.Url })
+        }
     }
     
 open Microsoft.FSharp.Core.Printf

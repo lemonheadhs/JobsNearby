@@ -5,6 +5,7 @@ open System
 open Newtonsoft.Json
 
 open Models
+open FSharp.Data
 
 
 let (|CrawlingWork|_|) (x: string) =
@@ -79,3 +80,18 @@ let calcRadius scale =
     | "1000-9999人" -> 6
     | "10000人以上" -> 8
     | _ -> 2
+
+
+let private regx = Regex("\"latitude\":\"(?<lat>\d+\.?\d*)\",\"longitude\":\"(?<lon>\d+\.?\d*)\"", RegexOptions.Multiline)
+let tryRetrieveGeoInfoFromJobData (x: JobDataIntermediate) = async {
+    let! htmlStr = Http.AsyncRequestString(x.JobUrl)
+    let latNLon =
+        regx.IsMatch htmlStr |> function
+        | false -> None
+        | true  ->
+            let m = regx.Match htmlStr
+            ((m.Groups.["lat"].Value |> Convert.ToDouble),
+             (m.Groups.["lon"].Value |> Convert.ToDouble))
+            |> Some
+    return latNLon        
+}

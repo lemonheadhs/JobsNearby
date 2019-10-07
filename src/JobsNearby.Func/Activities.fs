@@ -21,63 +21,60 @@ let GetProfile([<ActivityTrigger>] profileId:string) = task {
 }
 
 let queryZhaopinAPI struct(profile:ProfileEntity, pageIndex:int) =
-    queryZhaopinAPI { Name= profile.Name
-                      City= profile.City
-                      CityCode= profile.CityCode
-                      Excludes= profile.Excludes
-                      Includes= profile.Includes
-                      Home= profile.Home
-                      KeyWords= profile.KeyWords
-                      MinSalary= profile.MinSalary
-                      MaxSalary= profile.MaxSalary
-                      Attempt= profile.Attempt }
+    queryZhaopinAPI { Name= profile.name
+                      City= profile.city
+                      CityCode= profile.cityCode
+                      Excludes= profile.excludes
+                      Includes= profile.includes
+                      Home= profile.home
+                      KeyWords= profile.keyWords
+                      MinSalary= profile.minSalary
+                      MaxSalary= profile.maxSalary
+                      Attempt= profile.attempt }
                     pageIndex
 
 [<FunctionName("queryZhaopinAPI")>]
 let QueryZhaopinAPI([<ActivityTrigger>] p) = queryZhaopinAPI p
 
 
-let getUsefulJobDataItems struct((profile: ProfileEntity), searchAttemptId, (pageResults: JobsResults.Root)) =
-    let includes = profile.Includes |> String.toOption |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
-    let excludes = profile.Excludes |> String.toOption |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
+let getUsefulJobDataItems struct((profile: ProfileEntity), searchAttemptId, (pageResults: JobsResultsDto)) =
+    let includes = profile.includes |> String.toOption |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
+    let excludes = profile.excludes |> String.toOption |> Option.defaultValue("") |> fun s -> Regex(s, RegexOptions.IgnoreCase)
     let interestingPositionName pName =
         (not <| excludes.IsMatch(pName)) && includes.IsMatch(pName)
 
-    pageResults.Data.Results
+    pageResults.Results
     |> Array.where(fun r -> interestingPositionName r.JobName)
     //|> tap (fun arr -> Log.Debug("{count} interesting position in this round, related dataSetId {dataSetId}", arr.Length, searchAttemptId))
     |> Array.map(fun job -> 
             let jobDataId = job.Number
             let jobDto = {
-                category = job.Company.Type.Name
-                color = chooseColor job.Company.Type.Name
-                companyName = job.Company.Name
+                category = job.CompanyTypeName
+                color = chooseColor job.CompanyTypeName
+                companyName = job.CompanyName
                 distance = "0"
                 link = job.PositionUrl
-                markerRadius = calcRadius job.Company.Size.Name
+                markerRadius = calcRadius job.CompanySizeName
                 name = job.JobName
-                salaryEstimate = float (salaryEstimate(job.Salary, job.Company.Type.Name))
-                scale = job.Company.Size.Name
+                salaryEstimate = float (salaryEstimate(job.Salary, job.CompanyTypeName))
+                scale = job.CompanySizeName
             }
-            let compId = job.Company.Number
-            let compPartition = 
-                match job.Geo.Lat, job.Geo.Lon with
-                | None, _ | _, None | Some 0m, Some 0m | Some -1m, Some -1m -> "Special"
-                | _ -> "Normal"
+            let compId = job.CompanyNumber
             let compDto = {
-                Name = job.Company.Name
-                DetailUrl = job.Company.Url
-                Latitude = job.Geo.Lat |> Option.defaultValue(0m) |> float
-                Longitude = job.Geo.Lon |> Option.defaultValue(0m) |> float
+                Name = job.CompanyName
+                DetailUrl = job.CompanyUrl
+                Latitude = 0.
+                Longitude = 0.
                 Distances = "{}"
             }
-            (sprintf "JobData##%s|%s|%s|%s|%s|%s"
-                searchAttemptId
-                jobDataId
-                (JsonConvert.SerializeObject jobDto)
-                compPartition
-                compId
-                (JsonConvert.SerializeObject compDto))
+            { Prefix=
+                  sprintf "JobData##%s|%s|%s"
+                      searchAttemptId
+                      jobDataId
+                      (JsonConvert.SerializeObject jobDto)
+              CompId= compId
+              CompDto= compDto
+              JobUrl= jobDto.link }
         )
     |> Task.FromResult
 
@@ -86,8 +83,28 @@ let GetUsefulJobDataItems([<ActivityTrigger>] p) = getUsefulJobDataItems p
 
 open JobsNearby.Func.Storage.Queue
 
+let processIntermediateDataPushBacklog (x: JobDataIntermediate) = task {
+    let! latNLon = tryRetrieveGeoInfoFromJobData x
+    let (compPartition, dto) =
+        match latNLon with
+        | None | Some (0., 0.) | Some (-1., -1.) ->
+            "Special", x.CompDto
+        | Some (lat, lon) ->
+            "Normal",
+            {x.CompDto with
+                Latitude= lat
+                Longitude= lon }
+    let msg =
+        sprintf "%s|%s|%s|%s"
+            x.Prefix
+            compPartition
+            x.CompId
+            (JsonConvert.SerializeObject dto)
+    do! PushBacklog msg
+}
+    
 [<FunctionName("pushBacklog")>]
-let PushBacklog([<ActivityTrigger>] p) =  PushBacklog p
+let PushBacklog([<ActivityTrigger>] p) =  processIntermediateDataPushBacklog p
 
 [<FunctionName("getCompany")>]
 let GetCompany([<ActivityTrigger>] p) =  
@@ -97,12 +114,17 @@ let GetCompany([<ActivityTrigger>] p) =
 [<FunctionName("calcDistance")>]
 let CalcDistance([<ActivityTrigger>] p) =  
     let ak = Environment.GetEnvironmentVariable("BaiduMapAppKey")
-    calcDistance ak p
+    let struct(home: string option, compLat: float, compLon: float) = p
+    task {
+        return! calcDistance ak home (compLat, compLon)
+    }
 
 [<FunctionName("searchGeoCode")>]
 let SearchGeoCode([<ActivityTrigger>] p) =  
     let ak = Environment.GetEnvironmentVariable("BaiduMapAppKey")
-    searchGeoCode ak p
+    task {
+        return! searchGeoCode ak p
+    }
 
 let saveCompany struct(compType:CompType, compId:string, compInfo:CompanyDto) =
     let e = CompanyEntity(compType.Name, compId)
@@ -131,15 +153,15 @@ let SaveSpecialCompany([<ActivityTrigger>] p) =  saveSpecialCompany p
 
 let saveJobData struct(searchAttemptId:string, jobDataId:string, jobData:JobDataDto) =
     let e = JobDataEntity(searchAttemptId, jobDataId)
-    e.Category <- jobData.category
-    e.Color <- jobData.color
-    e.CompanyName <- jobData.companyName
-    e.Distance <- jobData.distance
-    e.Link <- jobData.link
-    e.MarkerRadius <- jobData.markerRadius
-    e.Name <- jobData.name
-    e.SalaryEstimate <- jobData.salaryEstimate
-    e.Scale <- jobData.scale
+    e.category <- jobData.category
+    e.color <- jobData.color
+    e.companyName <- jobData.companyName
+    e.distance <- jobData.distance
+    e.link <- jobData.link
+    e.markerRadius <- jobData.markerRadius
+    e.name <- jobData.name
+    e.salaryEstimate <- jobData.salaryEstimate
+    e.scale <- jobData.scale
     JobDataEntity.Save(e) :> Task
 
 [<FunctionName("saveJobData")>]

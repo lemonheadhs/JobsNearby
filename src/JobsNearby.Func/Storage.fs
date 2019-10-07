@@ -20,15 +20,15 @@ module Table = begin
 
     type JobDataEntity (partition:string, rowId:string) =
         inherit TableEntity (partition, rowId)
-        member val Category = "" with get, set
-        member val Color = "" with get, set
-        member val CompanyName = "" with get, set
-        member val Distance = "" with get, set
-        member val Link = "" with get, set
-        member val MarkerRadius = 0 with get, set
-        member val Name = "" with get, set
-        member val SalaryEstimate = 0. with get, set
-        member val Scale = "" with get, set
+        member val category = "" with get, set
+        member val color = "" with get, set
+        member val companyName = "" with get, set
+        member val distance = "" with get, set
+        member val link = "" with get, set
+        member val markerRadius = 0 with get, set
+        member val name = "" with get, set
+        member val salaryEstimate = 0. with get, set
+        member val scale = "" with get, set
     with
         static member Save (e:JobDataEntity) =
             let table = getTable JobDataTable
@@ -79,25 +79,27 @@ module Table = begin
     type ProfileEntity (partition:string, rowId:string) =
         inherit TableEntity (partition, rowId)
         new() = ProfileEntity("","")
-        member val Name = "" with get, set
-        member val City = "" with get, set
-        member val CityCode = "" with get, set
-        member val Excludes = "" with get, set
-        member val Includes = "" with get, set
-        member val Home = "" with get, set
-        member val KeyWords = "" with get, set
-        member val MinSalary = 0. with get, set
-        member val MaxSalary = 0. with get, set
-        member val Attempt = "" with get, set
+        member val name = "" with get, set
+        member val city = "" with get, set
+        member val cityCode = "" with get, set
+        member val excludes = "" with get, set
+        member val includes = "" with get, set
+        member val home = "" with get, set
+        member val keyWords = "" with get, set
+        member val minSalary = 0. with get, set
+        member val maxSalary = 0. with get, set
+        member val attempt = "" with get, set
     with
         static member GetByProfileId (id:string) =
             let table = getTable ProfileTable
-            TableQuery<ProfileEntity>()
-                .Where(
-                    ("PartitionKey" == "profile")
-                  + ("RowKey" == id))
-            |> table.ExecuteQuery
-            |> Seq.tryHead
+            let ls =
+                TableQuery<ProfileEntity>()
+                    .Where(
+                        ("PartitionKey" == "profile")
+                      + ("RowKey" == id))
+                |> table.ExecuteQuery
+                |> Seq.toArray
+            ls |> Seq.tryHead
 
 end
 
@@ -105,7 +107,7 @@ module Queue = begin
     open Microsoft.Azure.Storage.Queue
     open FSharp.Control.Tasks
     
-    let PushBacklog msg =
+    let PushBacklog (msg:string) =
         let queue =
             let connStr = Environment.GetEnvironmentVariable("connStr")
             CloudStorageAccount.Parse(connStr)

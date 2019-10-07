@@ -11,10 +11,10 @@ open System.Threading.Tasks
 let Run([<QueueTrigger("test", Connection = "connStr")>]
         myQueueItem: string,
         [<OrchestrationClient>]
-        starter: DurableOrchestrationClient,
-        log: ILogger) =
+        starter: DurableOrchestrationClient(*,
+        log: ILogger*)) =
     
-    log.LogInformation (sprintf """C# Queue trigger function processed: %s""" myQueueItem)
+    //log.LogInformation (sprintf """C# Queue trigger function processed: %s""" myQueueItem)
 
     task {
         let ran = Random(DateTime.Now.Millisecond)
