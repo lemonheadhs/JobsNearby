@@ -84,16 +84,24 @@ let GetUsefulJobDataItems([<ActivityTrigger>] p) = getUsefulJobDataItems p
 open JobsNearby.Func.Storage.Queue
 
 let processIntermediateDataPushBacklog (x: JobDataIntermediate) = task {
-    let! latNLon = tryRetrieveGeoInfoFromJobData x
-    let (compPartition, dto) =
-        match latNLon with
-        | None | Some (0., 0.) | Some (-1., -1.) ->
-            "Special", x.CompDto
-        | Some (lat, lon) ->
-            "Normal",
-            {x.CompDto with
-                Latitude= lat
-                Longitude= lon }
+    // let! latNLon = tryRetrieveGeoInfoFromJobData x
+    // let (compPartition, dto) =
+    //     match latNLon with
+    //     | None | Some (0., 0.) | Some (-1., -1.) ->
+    //         "Special", x.CompDto
+    //     | Some (lat, lon) ->
+    //         "Normal",
+    //         {x.CompDto with
+    //             Latitude= lat
+    //             Longitude= lon }
+    
+    // because the position detail page has deployed some anti-spider techniques, 
+    // we cannot directly get the geo info from the original page content.
+    // have to mark every company as special here; later if we can retrieve existing company geo info
+    // from the table, then we can calculate the distance; but if we cannot, then store the job/company info marked as special, 
+    // and maybe later munually grab the geo info or use selenium solutions... 
+    let compPartition = "Special"
+    let dto = x.CompDto
     let msg =
         sprintf "%s|%s|%s|%s"
             x.Prefix
@@ -138,13 +146,14 @@ let saveCompany struct(compType:CompType, compId:string, compInfo:CompanyDto) =
 [<FunctionName("saveCompany")>]
 let SaveCompany([<ActivityTrigger>] p) =  saveCompany p
 
-let saveSpecialCompany struct(compId:string, compName:string, detailUrl:string) =
+let saveSpecialCompany struct(compId:string, compName:string, detailUrl:string, sampleJobPage:string) =
     let e = CompanyEntity(CompType.Special.Name, compId)
     e.DetailUrl <- detailUrl
     e.Latitude <- 0.
     e.Longitude <- 0.
     e.Name <- compName
     e.Distances <- null
+    e.SampleJobPage <- sampleJobPage
     CompanyEntity.Save(e) :> Task
 
 [<FunctionName("saveSpecialCompany")>]
@@ -166,4 +175,21 @@ let saveJobData struct(searchAttemptId:string, jobDataId:string, jobData:JobData
 
 [<FunctionName("saveJobData")>]
 let SaveJobData([<ActivityTrigger>] p) =  saveJobData p
+
+let saveJobDataSpecial struct(searchAttemptId:string, jobDataId:string, jobData:JobDataDto) =
+    let e = JobDataEntity("Special", jobDataId)
+    e.category <- jobData.category
+    e.color <- jobData.color
+    e.companyName <- jobData.companyName
+    e.distance <- jobData.distance
+    e.link <- jobData.link
+    e.markerRadius <- jobData.markerRadius
+    e.name <- jobData.name
+    e.salaryEstimate <- jobData.salaryEstimate
+    e.scale <- jobData.scale
+    e.reservedPartition <- searchAttemptId
+    JobDataEntity.Save(e) :> Task
+
+[<FunctionName("saveJobDataSpecial")>]
+let SaveJobDataSpecial([<ActivityTrigger>] p) =  saveJobDataSpecial p
 

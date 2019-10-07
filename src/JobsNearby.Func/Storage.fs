@@ -29,6 +29,7 @@ module Table = begin
         member val name = "" with get, set
         member val salaryEstimate = 0. with get, set
         member val scale = "" with get, set
+        member val reservedPartition: string = null with get, set
     with
         static member Save (e:JobDataEntity) =
             let table = getTable JobDataTable
@@ -52,6 +53,7 @@ module Table = begin
         member val Longitude = 0. with get, set
         member val Name = "" with get, set
         member val Distances = "" with get, set
+        member val SampleJobPage: string = null with get, set
     with
         static member GetNormal compId =
             let table = getTable CompanyTable

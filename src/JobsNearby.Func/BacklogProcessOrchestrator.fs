@@ -80,20 +80,12 @@ let RunOrchestrator([<OrchestrationTrigger>] context: DurableOrchestrationContex
                                 { jobDataDto with 
                                     distance = distance.ToString() }))
                 | None ->
-                    if compPartition = "Normal" then
-                        let map = new Dictionary<string, float>()
-                        let! d = context.CallActivityAsync<float>("calcDistance", struct(profile.home |> String.toOption, compDto.Latitude, compDto.Longitude))
-                        map.[info.ProfileId] <- d
-                        do! context.CallActivityAsync("saveCompany", 
-                                struct(CompType.Normal, compId, 
-                                    { compDto with
-                                        Distances = JsonConvert.SerializeObject(map) }))
-                        do! context.CallActivityAsync("saveJobData", 
-                                struct(info.SearchAttemptId, jobDataId, 
-                                    { jobDataDto with 
-                                        distance = d.ToString() }))
-                    else
-                        do! context.CallActivityAsync("saveSpecialCompany", struct(compId, compDto.Name, compDto.DetailUrl))
+                    // because we can't get geo info from directly inspect the page content,
+                    // we have to mark every job/company info as special,
+                    // now we didn't find existing company, so store the special info directly
+                    do! context.CallActivityAsync("saveJobDataSpecial", 
+                            struct(info.SearchAttemptId, jobDataId, jobDataDto))
+                    do! context.CallActivityAsync("saveSpecialCompany", struct(compId, compDto.Name, compDto.DetailUrl, jobDataDto.link))
                 
             | _ -> ()
 }
