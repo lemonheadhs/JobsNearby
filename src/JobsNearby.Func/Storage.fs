@@ -30,6 +30,7 @@ module Table = begin
         member val salaryEstimate = 0. with get, set
         member val scale = "" with get, set
         member val reservedPartition: string = null with get, set
+        member val companyId: string = null with get, set
     with
         static member Save (e:JobDataEntity) =
             let table = getTable JobDataTable

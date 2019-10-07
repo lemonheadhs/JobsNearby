@@ -11,7 +11,7 @@ nuget Serilog.Sinks.AzureTableStorage
 nuget xunit
 nuget xunit.runner.visualstudio
 nuget FSharp.Azure.StorageTypeProvider
-nuget Newtonsoft.Json
+nuget Newtonsoft.Json 11.0.2
 nuget Serilog.AspNetCore
 nuget Serilog.Sinks.Console
 nuget Serilog.Settings.Configuration
@@ -30,6 +30,7 @@ group azfunc
     nuget Microsoft.NET.Sdk.Functions 1.0.29
     nuget Microsoft.Azure.WebJobs.Extensions.DurableTask
     nuget Microsoft.Azure.WebJobs.Extensions.Storage
+    nuget Newtonsoft.Json 11.0.2
 
 group scripts
     source https://www.nuget.org/api/v2
@@ -38,6 +39,17 @@ group scripts
     nuget FSharp.Data
     nuget FSharp.Azure.StorageTypeProvider
     nuget Newtonsoft.Json
+
+group dataCleansing
+    storage: none
+    source https://api.nuget.org/v3/index.json
+    framework: net472
+
+    nuget FSharp.Core
+    nuget FSharp.Data
+    nuget canopy
+    nuget FSharp.Azure.StorageTypeProvider
+nuget Selenium.WebDriver.ChromeDriver
 
 group azureRes
     source https://nuget.org/api/v2

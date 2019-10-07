@@ -84,7 +84,7 @@ let RunOrchestrator([<OrchestrationTrigger>] context: DurableOrchestrationContex
                     // we have to mark every job/company info as special,
                     // now we didn't find existing company, so store the special info directly
                     do! context.CallActivityAsync("saveJobDataSpecial", 
-                            struct(info.SearchAttemptId, jobDataId, jobDataDto))
+                            struct(info.SearchAttemptId, jobDataId, jobDataDto, compId))
                     do! context.CallActivityAsync("saveSpecialCompany", struct(compId, compDto.Name, compDto.DetailUrl, jobDataDto.link))
                 
             | _ -> ()

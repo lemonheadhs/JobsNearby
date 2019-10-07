@@ -1,0 +1,4 @@
+group dataCleansing
+FSharp.Core
+canopy
+Selenium.WebDriver.ChromeDriver

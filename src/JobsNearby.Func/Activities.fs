@@ -176,7 +176,7 @@ let saveJobData struct(searchAttemptId:string, jobDataId:string, jobData:JobData
 [<FunctionName("saveJobData")>]
 let SaveJobData([<ActivityTrigger>] p) =  saveJobData p
 
-let saveJobDataSpecial struct(searchAttemptId:string, jobDataId:string, jobData:JobDataDto) =
+let saveJobDataSpecial struct(searchAttemptId:string, jobDataId:string, jobData:JobDataDto, compId:string) =
     let e = JobDataEntity("Special", jobDataId)
     e.category <- jobData.category
     e.color <- jobData.color
@@ -188,6 +188,7 @@ let saveJobDataSpecial struct(searchAttemptId:string, jobDataId:string, jobData:
     e.salaryEstimate <- jobData.salaryEstimate
     e.scale <- jobData.scale
     e.reservedPartition <- searchAttemptId
+    e.companyId <- compId
     JobDataEntity.Save(e) :> Task
 
 [<FunctionName("saveJobDataSpecial")>]
