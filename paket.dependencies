@@ -49,7 +49,9 @@ group dataCleansing
     nuget FSharp.Data
     nuget canopy
     nuget FSharp.Azure.StorageTypeProvider
-nuget Selenium.WebDriver.ChromeDriver
+    nuget Selenium.WebDriver.ChromeDriver
+nuget System.Configuration.ConfigurationManager
+    nuget TaskBuilder.fs
 
 group azureRes
     source https://nuget.org/api/v2

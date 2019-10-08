@@ -3,8 +3,6 @@
 
 open System
 open FSharp.Data
-open System.Text.RegularExpressions
-open Newtonsoft.Json
 
 [<CLIMutable>]
 type JobDataDto =

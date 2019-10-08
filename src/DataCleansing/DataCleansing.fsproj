@@ -3,9 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
+    <DisableAutoSetFscCompilerPath>true</DisableAutoSetFscCompilerPath>
+    <DotnetFscCompilerPath></DotnetFscCompilerPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../JobsNearby.Common/Models.fs" />
+    <Compile Include="../JobsNearby.Common/ExternalApi.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

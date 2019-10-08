@@ -2,3 +2,7 @@ group dataCleansing
 FSharp.Core
 canopy
 Selenium.WebDriver.ChromeDriver
+TaskBuilder.fs
+FSharp.Data
+FSharp.Azure.StorageTypeProvider
+System.Configuration.ConfigurationManager

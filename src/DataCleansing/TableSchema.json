@@ -96,6 +96,10 @@
     "reservedPartition": {
       "Type": "String",
       "Optional": true
+    },
+    "companyId": {
+      "Type": "String",
+      "Optional": true
     }
   }
 }
